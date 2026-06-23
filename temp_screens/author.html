@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Author Profile | DevJournal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config from Style Guidance -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#d2d9f4",
+                    "outline-variant": "#c3c6d7",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-secondary-fixed": "#0d1c2e",
+                    "inverse-on-surface": "#eef0ff",
+                    "surface-container-high": "#e2e7ff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "tertiary": "#943700",
+                    "on-primary-container": "#eeefff",
+                    "primary-fixed": "#dbe1ff",
+                    "surface-bright": "#faf8ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#ffede6",
+                    "on-surface-variant": "#434655",
+                    "on-surface": "#131b2e",
+                    "on-background": "#131b2e",
+                    "secondary-container": "#d5e3fc",
+                    "background": "#faf8ff",
+                    "on-primary-fixed": "#00174b",
+                    "on-secondary-fixed-variant": "#3a485b",
+                    "secondary": "#515f74",
+                    "outline": "#737686",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#b4c5ff",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#2563eb",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#b9c7df",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface-container-low": "#f2f3ff",
+                    "primary": "#004ac6",
+                    "secondary-fixed": "#d5e3fc",
+                    "surface": "#faf8ff",
+                    "surface-container": "#eaedff",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#bc4800",
+                    "surface-tint": "#0053db",
+                    "inverse-surface": "#283044",
+                    "surface-variant": "#dae2fd",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "surface-container-highest": "#dae2fd",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "on-secondary-container": "#57657a",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#360f00",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "container-max": "1200px",
+                    "base": "8px",
+                    "xxl": "64px",
+                    "content-max": "720px"
+            },
+            "fontFamily": {
+                    "label-md": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "display": ["Geist"],
+                    "body-md": ["Geist"],
+                    "body-lg": ["Geist"],
+                    "code": ["jetbrainsMono"],
+                    "headline-md": ["Geist"],
+                    "headline-lg-mobile": ["Geist"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "27.2px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "30.6px", "fontWeight": "400"}],
+                    "code": ["14px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-tab-indicator {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--tw-primary);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center justify-between px-gutter max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-xl">
+<a class="font-headline-md text-headline-md font-bold text-on-surface" href="#">DevJournal</a>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">News</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">AI</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Web Dev</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Security</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Cloud</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a software architect in their early 30s, wearing a charcoal grey turtleneck. The lighting is soft and directional, typical of high-end editorial photography. The background is a blurred modern office space with cool tones. High-resolution, sharp focus on eyes, warm skin tones against a clinical blue-white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5DkL1ZED75E8byFaSPAkuH8UcdXfy_xYiLFZ4tXC6lFocTh3kFS-4V8_F5QlDeKU_hJYf9CeWxRZNJ_o4aNcGLb8kYraVsLeYLMMTeVM2Vw7ch1pjivOj2KeOQ2lY-OnJxtkPxMATdclmz-UAACRGmZxipbO9owF31nbcksouXITtuoj9ZquuyGtKgB5vn5-Be4uHBgaK8AGIYerva8oDBZQo_13IHvQlAMkcYKLR2fjXFn1MTdtoto2PqBB9baYdbcibDfNgnpA"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-xxl min-h-screen">
+<!-- Hero Profile Section -->
+<section class="bg-surface-container-low/40 pt-xl pb-lg border-b border-outline-variant/20">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="flex flex-col md:flex-row gap-xl items-start md:items-center">
+<!-- Avatar -->
+<div class="relative group">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden shadow-mid ring-4 ring-surface">
+<img class="w-full h-full object-cover" data-alt="A high-quality editorial headshot of a developer, masculine features, smiling slightly. Cinematic lighting with subtle rim light. The setting is an urban studio with concrete textures. The image uses a palette of soft greys and deep navy, reflecting a professional yet creative digital industry aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcBKJixbs1SCPLYupAxShdDHMpjl3X8yB14Cr9vY0FcQ89Sduej7UPKKcgyx37R8yll5JHfjRxNh0pc3o9GPDEAtkP6HYjzcklWUZ-LSHg2X8jBDezzok4ovB5DRFOfJogN6Y-Ug9uHYFOkEK9zfx2ZRCPM1kkREhR_HuTS-KKJ8Mk9BGBRpT0funHB9-z92-Tj6O1XtiERvi_Rhc1qbqpwWZjrgpFRDay9Uqrb9Py7Y_W003R3ka3hIqJ1o0XFW7OC35MEOAFM0w"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary text-on-primary p-2 rounded-lg shadow-lg">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<!-- Info -->
+<div class="flex-1 space-y-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Alex Rivera</h1>
+<p class="font-body-md text-primary font-medium">Principal Cloud Architect @ HyperScale</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-lg py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:shadow-mid transition-all active:scale-95">Follow</button>
+<button class="px-md py-2 border border-outline-variant text-on-surface rounded-lg font-label-md text-label-md hover:bg-surface-container transition-all active:scale-95">Message</button>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant max-w-[640px]">
+                            Writing about distributed systems, rust-based tooling, and the future of serverless orchestration. Creator of the 'Orbit' framework. 12+ years in the trenches of high-scale engineering.
+                        </p>
+<div class="flex flex-wrap gap-lg pt-sm">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-md">location_on</span>
+<span class="font-label-md text-label-md">San Francisco, CA</span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-md">link</span>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">alexrivera.dev</a>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-surface overflow-hidden bg-surface-dim"></div>
+<div class="w-6 h-6 rounded-full border-2 border-surface overflow-hidden bg-surface-dim"></div>
+<div class="w-6 h-6 rounded-full border-2 border-surface overflow-hidden bg-surface-dim"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant"><strong class="text-on-surface">14.2k</strong> Followers</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="font-label-md text-label-md text-on-surface-variant"><strong class="text-on-surface">128</strong> Published</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Area -->
+<div class="max-w-container-max mx-auto px-gutter py-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xxl">
+<!-- Left Content: Feed -->
+<div class="lg:col-span-8">
+<!-- Tab Navigation -->
+<div class="flex items-center border-b border-outline-variant/30 mb-xl overflow-x-auto scrollbar-hide">
+<button class="px-lg py-md text-primary font-semibold border-b-2 border-primary relative transition-colors">
+                            Published Articles
+                        </button>
+<button class="px-lg py-md text-on-surface-variant hover:text-on-surface transition-colors font-medium">
+                            Popular
+                        </button>
+<button class="px-lg py-md text-on-surface-variant hover:text-on-surface transition-colors font-medium">
+                            Collections
+                        </button>
+<button class="px-lg py-md text-on-surface-variant hover:text-on-surface transition-colors font-medium">
+                            About
+                        </button>
+</div>
+<!-- Article Feed -->
+<div class="space-y-xl">
+<!-- Article Card 1 -->
+<article class="group cursor-pointer">
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="w-full md:w-64 h-44 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant/20 flex-shrink-0">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A clean, minimalist 3D abstract visualization of server nodes interconnected by glowing light paths. The color palette consists of deep blue backgrounds with vibrant electric blue and white data streams. Modern technology aesthetic, soft depth of field, high-fidelity render for a tech journal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvBrWJQUubQvcYXn35VyL212D_BgjmPQhQONZmdYrPCyApukWiNmxpLU-X4feZDI9Mi4JsCHclJ6XIbA-3yQl1MiRwgdiy7c67QodEInjgMUizwrDu-w_SQ-_mIBxHEIRj9_X_1dYWzjiINGiCU-rCiGpea9PmE5Oqg4a1B8xrqMiXr7R3ao4YL7oPSa5bNT4LpYum-dxITxZE1jn1zo7xoXw15A4V-MKM2oqqbZKcv7BgAPRwXvUy1P738Jo_ghMjdQ1Yw33Mos0"/>
+</div>
+<div class="flex flex-col justify-between py-xs">
+<div>
+<div class="flex items-center gap-sm mb-sm">
+<span class="px-2 py-0.5 bg-primary/10 text-primary rounded font-label-md text-[12px] font-bold uppercase tracking-wider">Engineering</span>
+<span class="text-on-surface-variant font-label-md text-[12px]">Oct 24, 2024 • 12 min read</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm group-hover:text-primary transition-colors leading-tight">
+                                            The Case for WebAssembly in Modern Cloud Architectures
+                                        </h3>
+<p class="font-body-md text-on-surface-variant line-clamp-2">
+                                            Exploring why Wasm is moving beyond the browser and becoming the gold standard for secure, high-performance edge computing and serverless execution.
+                                        </p>
+</div>
+<div class="flex items-center gap-lg mt-md text-on-surface-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="font-label-md text-label-md">1.2k</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">comment</span>
+<span class="font-label-md text-label-md">48</span>
+</div>
+<button class="ml-auto p-1 hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<hr class="border-outline-variant/20"/>
+<!-- Article Card 2 -->
+<article class="group cursor-pointer">
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="w-full md:w-64 h-44 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant/20 flex-shrink-0">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="An abstract representation of Rust programming language safety features. A series of interlocking geometric shields and chains in a futuristic bronze and steel metallic finish. Warm light highlights the intricate details of the 'ownership' model concepts visually. Sophisticated, high-end 3D graphics on a dark, textured background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZDMrt_f7iPHcOwgBIIHOwoOnmE17CddaNp_00vTjXrmci_7nHYJEemNBk9ksIRpe8x4vXnaVmbhqgiZtdy394C28DV6G6GEjd-5mSCqQEJoUYzz24uAc4fSD0DA4sIbbJIzjXmwjSmzjIwsiGb-_DudSSbMwgkfGbXOCHQ23MM0_s3OPTNAIHxu3yCClUhhYMqsUDlZIZclyZF-ncCRPrsRPnHsSSEN1u-w_trtWH_n8k0DRv35trhYKUeuO2FZTN4DIg7rW63vc"/>
+</div>
+<div class="flex flex-col justify-between py-xs">
+<div>
+<div class="flex items-center gap-sm mb-sm">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary rounded font-label-md text-[12px] font-bold uppercase tracking-wider">DevOps</span>
+<span class="text-on-surface-variant font-label-md text-[12px]">Oct 12, 2024 • 8 min read</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm group-hover:text-primary transition-colors leading-tight">
+                                            Optimizing CI/CD Pipelines for Rust Services
+                                        </h3>
+<p class="font-body-md text-on-surface-variant line-clamp-2">
+                                            A deep dive into caching strategies and parallel build optimizations that reduced our deployment time from 15 minutes to under 3.
+                                        </p>
+</div>
+<div class="flex items-center gap-lg mt-md text-on-surface-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="font-label-md text-label-md">842</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">comment</span>
+<span class="font-label-md text-label-md">19</span>
+</div>
+<button class="ml-auto p-1 hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<hr class="border-outline-variant/20"/>
+<!-- Article Card 3 (Bento Style Variation) -->
+<article class="bg-surface-container-low p-lg rounded-xl border border-outline-variant/30 group hover:shadow-mid transition-all cursor-pointer">
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<span class="px-2 py-0.5 bg-primary/10 text-primary rounded font-label-md text-[12px] font-bold uppercase tracking-wider">Career</span>
+<span class="text-on-surface-variant font-label-md text-[12px]">Sep 28, 2024 • 15 min read</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
+                                    Beyond the Senior Title: Mapping Your Path to Staff Engineer
+                                </h3>
+<p class="font-body-md text-on-surface-variant">
+                                    Transitioning from a code contributor to a strategic technical leader requires a fundamental shift in how you measure impact. Here's the framework I used at HyperScale.
+                                </p>
+<div class="flex items-center gap-lg text-on-surface-variant">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<span class="font-label-md text-label-md">3.4k</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">comment</span>
+<span class="font-label-md text-label-md">112</span>
+</div>
+<button class="ml-auto p-1 hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+<button class="w-full mt-xl py-md border-2 border-dashed border-outline-variant/40 rounded-xl text-on-surface-variant hover:border-primary/40 hover:text-primary transition-all font-medium">
+                        Load More Articles
+                    </button>
+</div>
+<!-- Right Content: Sidebar -->
+<aside class="lg:col-span-4 space-y-xxl">
+<!-- Popular Topics -->
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant/20 shadow-low">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-lg">Expertise</h4>
+<div class="flex flex-wrap gap-sm">
+<span class="px-3 py-1.5 bg-surface-container-high rounded-full font-label-md text-label-md text-on-surface-variant border border-outline-variant/30 hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all">Distributed Systems</span>
+<span class="px-3 py-1.5 bg-surface-container-high rounded-full font-label-md text-label-md text-on-surface-variant border border-outline-variant/30 hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all">Rust</span>
+<span class="px-3 py-1.5 bg-surface-container-high rounded-full font-label-md text-label-md text-on-surface-variant border border-outline-variant/30 hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all">Cloud Native</span>
+<span class="px-3 py-1.5 bg-surface-container-high rounded-full font-label-md text-label-md text-on-surface-variant border border-outline-variant/30 hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all">Go</span>
+<span class="px-3 py-1.5 bg-surface-container-high rounded-full font-label-md text-label-md text-on-surface-variant border border-outline-variant/30 hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all">GraphQL</span>
+<span class="px-3 py-1.5 bg-surface-container-high rounded-full font-label-md text-label-md text-on-surface-variant border border-outline-variant/30 hover:bg-primary/10 hover:text-primary hover:border-primary/30 cursor-pointer transition-all">Wasm</span>
+</div>
+</div>
+<!-- Recommended Authors -->
+<div class="space-y-lg">
+<div class="flex items-center justify-between">
+<h4 class="font-headline-md text-headline-md text-on-surface">Related Voices</h4>
+<a class="text-primary font-label-md text-label-md hover:underline" href="#">View All</a>
+</div>
+<div class="space-y-md">
+<!-- Author Item 1 -->
+<div class="flex items-center gap-md p-sm hover:bg-surface-container-low rounded-xl transition-all group cursor-pointer">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A portrait of a female software engineer with a modern, professional look. Soft natural lighting from a large window. High-end editorial style with a shallow depth of field. Professional color grading with teal and orange highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOIU7RPhBDU1TLBOKExr28ZPejS5vO2STUnSnTGhiyY7DxYNiTNBbZJCNq-_2qaVlx2mpF9ZCYOXmnJ9rjy5d0Dp9kAaSqsOXsq0aK47L7wnm9xdIAvr2IRsoJxNsgszp9L96opHGT2jqir1QJUfSO1Do5ujiCE7RtSAPRthT62N4ZoqF1Ts70vgqQAIVzMI-kyMsN5w7Rj_bTAqXjdSNO7tNzTDFRjCmgOS7KOlVG7OPMGE6nIRrDVhjKsn_Q0Xl2e2wdnrVBBdU"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-on-surface font-semibold truncate group-hover:text-primary">Sarah Chen</p>
+<p class="font-label-md text-on-surface-variant truncate">Security Researcher @ GuardRail</p>
+</div>
+<button class="p-2 text-primary border border-primary/20 rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+</button>
+</div>
+<!-- Author Item 2 -->
+<div class="flex items-center gap-md p-sm hover:bg-surface-container-low rounded-xl transition-all group cursor-pointer">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a senior developer, diverse background, minimalist aesthetic. Clean white background with soft shadows. High contrast editorial lighting. Sophisticated and high-tech feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwjUgPlmf0Vs6lU_a1uxUDjSh9j7cme8itHFPO0mpxQBJcKArREqZ03vHor50U6VIk882_DGcU3N1LyFkV_miCq0IKC5XvrjwyoKssGkqRhFbyhkT0SYN4JFYwCuRDTSf4xebcYzk8Wi4QOG-cnGVewJIlnuxnLhH2wDpjnWgOnn2s4gbkCvFX5EMa6BBJuFesX-oJvNhRaqxfWTLyKfNYKGZM8HctvOYAOEQTfdH3N7oim3S3ScZU-dqSUj4n94hDedfh2EeV3kc"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-on-surface font-semibold truncate group-hover:text-primary">Marcus Thorne</p>
+<p class="font-label-md text-on-surface-variant truncate">SRE Lead @ CloudSphere</p>
+</div>
+<button class="p-2 text-primary border border-primary/20 rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+</button>
+</div>
+<!-- Author Item 3 -->
+<div class="flex items-center gap-md p-sm hover:bg-surface-container-low rounded-xl transition-all group cursor-pointer">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A profile photo of a tech leader, warm smile, professional attire, soft lighting. Background is a blurred bookshelf. The visual style is premium digital publication standard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXPCVe0YAnT7Ui86gl5NJqMEbbFVZddNffH3sElEewvPaqUXqQ4Kd-e0GukxO0Pbf7vBupkJobQ20zO8R2QP3OhZ5CJLu5ODydzUHm-dXyqa1URjo1URsnDhYtrenvDmfs0G1cdKYhkH1Pv18EV7eolBkubQyZRjVPhfRupN0nafn-YuulnVPYng7q2feGfBaxUUZv3ck1e7mpUvSLLEyl2qjrRMOh-uRGezM6RP-csWVc5GaldAgU2VoJdLfbwYK4xprrlUUY_ng"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-on-surface font-semibold truncate group-hover:text-primary">Elena Rodriguez</p>
+<p class="font-label-md text-on-surface-variant truncate">Full Stack Engineer</p>
+</div>
+<button class="p-2 text-primary border border-primary/20 rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Trending Section -->
+<div class="bg-surface-container-high/20 p-lg rounded-xl border border-outline-variant/20">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-lg">Trending in Cloud</h4>
+<div class="space-y-md">
+<a class="block group" href="#">
+<span class="font-label-md text-label-md text-on-surface-variant">#01</span>
+<p class="font-body-md text-on-surface group-hover:text-primary font-medium transition-colors">Serverless V8 Isolate Performance Benchmarks</p>
+</a>
+<a class="block group" href="#">
+<span class="font-label-md text-label-md text-on-surface-variant">#02</span>
+<p class="font-body-md text-on-surface group-hover:text-primary font-medium transition-colors">Multi-Cloud Traffic Steering with eBPF</p>
+</a>
+<a class="block group" href="#">
+<span class="font-label-md text-label-md text-on-surface-variant">#03</span>
+<p class="font-body-md text-on-surface group-hover:text-primary font-medium transition-colors">Kubernetes 1.32 API Deprecations Guide</p>
+</a>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-xxl bg-surface-container-low border-t border-outline-variant/20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg px-gutter py-xl max-w-container-max mx-auto">
+<div class="md:col-span-1">
+<p class="font-headline-md text-headline-md font-black text-on-surface mb-md">DevJournal</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Modern engineering insights for the next generation of architects.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-label-md font-bold uppercase text-on-surface-variant tracking-wider">Resources</h5>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">About</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">Careers</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">API</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-label-md font-bold uppercase text-on-surface-variant tracking-wider">Social</h5>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">Twitter</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">GitHub</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">Discord</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h5 class="font-label-md text-label-md font-bold uppercase text-on-surface-variant tracking-wider">Legal</h5>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">Terms</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:underline transition-all font-body-md text-body-md" href="#">RSS</a>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter pb-xl border-t border-outline-variant/10 pt-lg">
+<p class="font-body-md text-body-md text-on-surface-variant/70 text-center">© 2024 DevJournal Editorial. Built for architects.</p>
+</div>
+</footer>
+<!-- Mobile Bottom Nav Bar -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface border-t border-outline-variant/30 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] h-16 flex justify-around items-center px-4">
+<a class="text-on-surface-variant flex flex-col items-center gap-1 transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-[10px]">Home</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1 transition-colors" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-label-md text-[10px]">Trending</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1 transition-colors" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="font-label-md text-[10px]">Bookmarks</span>
+</a>
+<a class="text-primary flex flex-col items-center gap-1 transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-[10px]">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple Interaction logic
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.95)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+
+        // Sticky Navbar background shift on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.add('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

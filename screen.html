@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DevJournal Weekly | Expert Insights for Architects</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Geist & JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#d2d9f4",
+                    "outline-variant": "#c3c6d7",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-secondary-fixed": "#0d1c2e",
+                    "inverse-on-surface": "#eef0ff",
+                    "surface-container-high": "#e2e7ff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "tertiary": "#943700",
+                    "on-primary-container": "#eeefff",
+                    "primary-fixed": "#dbe1ff",
+                    "surface-bright": "#faf8ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#ffede6",
+                    "on-surface-variant": "#434655",
+                    "on-surface": "#131b2e",
+                    "on-background": "#131b2e",
+                    "secondary-container": "#d5e3fc",
+                    "background": "#faf8ff",
+                    "on-primary-fixed": "#00174b",
+                    "on-secondary-fixed-variant": "#3a485b",
+                    "secondary": "#515f74",
+                    "outline": "#737686",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#b4c5ff",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#2563eb",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#b9c7df",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface-container-low": "#f2f3ff",
+                    "primary": "#004ac6",
+                    "secondary-fixed": "#d5e3fc",
+                    "surface": "#faf8ff",
+                    "surface-container": "#eaedff",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#bc4800",
+                    "surface-tint": "#0053db",
+                    "inverse-surface": "#283044",
+                    "surface-variant": "#dae2fd",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "surface-container-highest": "#dae2fd",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "on-secondary-container": "#57657a",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#360f00",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "container-max": "1200px",
+                    "base": "8px",
+                    "xxl": "64px",
+                    "content-max": "720px"
+            },
+            "fontFamily": {
+                    "label-md": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "display": ["Geist"],
+                    "body-md": ["Geist"],
+                    "body-lg": ["Geist"],
+                    "code": ["jetbrainsMono"],
+                    "headline-md": ["Geist"],
+                    "headline-lg-mobile": ["Geist"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "27.2px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "30.6px", "fontWeight": "400"}],
+                    "code": ["14px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Geist', sans-serif; -webkit-font-smoothing: antialiased; }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+        .issue-card:hover .issue-arrow { transform: translateX(4px); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md shadow-sm border-b border-outline-variant/30 dark:border-white/10 h-16">
+<nav class="flex items-center justify-between px-gutter max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-xl">
+<span class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface">DevJournal</span>
+<div class="hidden md:flex items-center gap-lg">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#">News</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#">AI</a>
+<a class="font-body-md text-body-md text-primary dark:text-inverse-primary font-semibold border-b-2 border-primary dark:border-inverse-primary pb-1" href="#">Web Dev</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#">Security</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden lg:flex relative items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 rounded-lg bg-surface-container-low border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-label-md text-label-md w-64" placeholder="Search insights..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95"><span class="material-symbols-outlined text-on-surface-variant">notifications</span></button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95"><span class="material-symbols-outlined text-on-surface-variant">bookmark</span></button>
+<button class="ml-2 w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a software architect in a minimalist workspace. The lighting is soft and natural, emphasizing a calm and focused engineering environment. The aesthetic is modern and light-mode compatible with subtle blue accents in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcUQSZzUu35G0CoAqx3Z3Kzrfgd2pVLUGdZ7VjPvCFm7Je9wUJ_-lvdOgG3sU_e_Pkl_wnpg44GJoka33l6Zo2QAFInmPoO1zZWE4QWUV4SbJPnQiw4WsrsuL334AotfMs8HkdzRGqppgXukRefhrijvv7tiZ6DdSwL3Rx_SQjM06t1Y0yhJe8jL5YfMPMlopWMTLdoSe4Ot5yvwPQXMSj4QuVk6MKqbcaa1zG9DVdPgTWNzH0hc_KiHnTXeX9eiXpjQu9KUqS8ac"/>
+</button>
+</div>
+</div>
+</nav>
+</header>
+<main class="pt-xxl min-h-screen">
+<!-- Hero Section -->
+<section class="relative overflow-hidden pt-xl pb-xxl px-gutter">
+
+<div class="max-w-content-max mx-auto relative z-10 text-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-md text-label-md mb-md">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+                    Curated by Senior Engineers
+                </div>
+<h1 class="font-display text-display mb-md text-on-surface tracking-tight">The DevJournal Weekly</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-xl">
+                    High-signal engineering insights, architectural patterns, and the latest in distributed systems. Delivered every Tuesday morning to 45,000+ architects.
+                </p>
+<!-- Subscription Form -->
+<div class="flex flex-col sm:flex-row gap-sm max-w-md mx-auto">
+<input class="flex-grow px-lg py-3 rounded-xl bg-surface-container border border-outline-variant focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-body-md text-body-md shadow-sm" placeholder="work@company.com" type="email"/>
+<button class="bg-primary text-on-primary px-xl py-3 rounded-xl font-headline-md text-label-md hover:shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                        Join for Free
+                    </button>
+</div>
+<p class="mt-md font-label-md text-label-md text-outline">No spam. One-click unsubscribe at any time.</p>
+</div>
+</section>
+<!-- Archive Section (Bento Grid) -->
+<section class="max-w-container-max mx-auto px-gutter mb-xxl">
+<div class="flex items-end justify-between mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Recent Issues</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Dive into our deep-dive archives.</p>
+</div>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline">
+                    View full archive <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Featured Card -->
+<article class="md:col-span-8 group relative rounded-xl overflow-hidden border border-outline-variant bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer">
+<div class="h-64 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A sophisticated architectural diagram showing microservices interacting through an event-driven bus. The style is clean, technical, and artistic, using a light-mode palette of soft blues and crisp whites. Sharp lines and minimal icons represent data flow, perfectly capturing the theme of system design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDe_7_xfOTFhSUtJh8TAJX1RB_8UbZkC9MWeQDtWkb2Mb8POwzSH6xltqSds73OBs3N2XadEfyTNaRGVQ9aEcCZJ-DzWdn5bHIV1eLEd8SdBnlkRdmDGLmk-xE2zu_Y9PXQKLF0wTzbNDKIB2dIT1HrtJWjur1Kru2qAjs-ukJDl5gcjaKxUU8-NIavnlzMgtITgdvpQ80RebLozPtlkMDwl0cdy8vnVUzShL-5iB7H4UdLp8FZ1G5LQ2EMd_FnyP4Q98c35zPf-yk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<span class="bg-tertiary-container text-on-tertiary-container px-2 py-1 rounded font-label-md text-label-md">Issue #128</span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex items-center gap-2 mb-sm text-outline font-label-md text-label-md">
+<span>October 24, 2023</span>
+<span>•</span>
+<span>12 min read</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-sm group-hover:text-primary transition-colors">The State of Serverless in 2024: Beyond the Hype</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">An in-depth analysis of cold-start optimizations, edge computing costs, and the architectural shifts leading companies toward hybrid infrastructure.</p>
+<div class="flex flex-wrap gap-sm">
+<span class="px-2 py-1 bg-surface-container-high rounded text-label-md font-label-md">Serverless</span>
+<span class="px-2 py-1 bg-surface-container-high rounded text-label-md font-label-md">Infrastructure</span>
+</div>
+</div>
+</article>
+<!-- Secondary Cards -->
+<div class="md:col-span-4 flex flex-col gap-lg">
+<article class="p-lg rounded-xl border border-outline-variant bg-surface-container-lowest hover:border-primary/40 transition-all cursor-pointer shadow-sm group">
+<span class="text-outline font-label-md text-label-md mb-xs block">Issue #127 • Oct 17</span>
+<h3 class="font-headline-md text-[18px] leading-tight mb-sm group-hover:text-primary transition-colors">Rust for WebAssembly: Performance Benchmarks</h3>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant mb-md line-clamp-2">How Rust-compiled Wasm modules are redefining browser capabilities for heavy data processing.</p>
+<div class="flex items-center text-primary font-label-md text-label-md gap-1">Read Summary <span class="material-symbols-outlined text-[16px] issue-arrow transition-transform">arrow_forward</span></div>
+</article>
+<article class="p-lg rounded-xl border border-outline-variant bg-surface-container-lowest hover:border-primary/40 transition-all cursor-pointer shadow-sm group">
+<span class="text-outline font-label-md text-label-md mb-xs block">Issue #126 • Oct 10</span>
+<h3 class="font-headline-md text-[18px] leading-tight mb-sm group-hover:text-primary transition-colors">Mastering GraphQL Schema Design at Scale</h3>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant mb-md line-clamp-2">Best practices for federated schemas, handling breaking changes, and preventing N+1 queries.</p>
+<div class="flex items-center text-primary font-label-md text-label-md gap-1">Read Summary <span class="material-symbols-outlined text-[16px] issue-arrow transition-transform">arrow_forward</span></div>
+</article>
+</div>
+</div>
+</section>
+<!-- Preference Settings Section -->
+<section class="bg-surface-container-low py-xxl border-y border-outline-variant/30">
+<div class="max-w-content-max mx-auto px-gutter">
+<div class="text-center mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Newsletter Preferences</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tailor your inbox experience to your specific interests.</p>
+</div>
+<div class="glass-card border border-white/40 p-xl rounded-2xl shadow-mid">
+<div class="space-y-xl">
+<!-- Frequency -->
+<div>
+<label class="font-headline-md text-[18px] block mb-md">Delivery Frequency</label>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-md">
+<label class="relative flex items-center p-lg border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-container transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+<input checked="" class="sr-only" name="freq" type="radio"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold">Weekly</span>
+<span class="text-[12px] text-outline">The classic Tuesday brief</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-primary opacity-0 transition-opacity peer-checked:opacity-100">check_circle</span>
+</label>
+<label class="relative flex items-center p-lg border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-container transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+<input class="sr-only" name="freq" type="radio"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold">Bi-Weekly</span>
+<span class="text-[12px] text-outline">Major stories only</span>
+</div>
+</label>
+<label class="relative flex items-center p-lg border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-container transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+<input class="sr-only" name="freq" type="radio"/>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold">Monthly</span>
+<span class="text-[12px] text-outline">The ultimate digest</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Topics -->
+<div>
+<label class="font-headline-md text-[18px] block mb-md">Topics of Interest</label>
+<div class="flex flex-wrap gap-sm">
+<button class="px-lg py-2 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface transition-all topic-pill" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')">Distributed Systems</button>
+<button class="px-lg py-2 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface transition-all topic-pill" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')">Cloud Native</button>
+<button class="px-lg py-2 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface transition-all topic-pill" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')">AI &amp; Machine Learning</button>
+<button class="px-lg py-2 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface transition-all topic-pill" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')">Frontend Engineering</button>
+<button class="px-lg py-2 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface transition-all topic-pill" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')">DevOps &amp; SRE</button>
+<button class="px-lg py-2 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface transition-all topic-pill" onclick="this.classList.toggle('bg-primary'); this.classList.toggle('text-white'); this.classList.toggle('border-primary')">Cybersecurity</button>
+</div>
+</div>
+<div class="pt-lg border-t border-outline-variant/30 flex justify-end">
+<button class="bg-on-surface text-on-primary px-xl py-3 rounded-xl font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all">Save My Preferences</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-xxl bg-surface-container-low dark:bg-surface-container-lowest/5 border-t border-outline-variant/20 dark:border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg px-gutter py-xl max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-2">
+<span class="font-headline-md text-headline-md font-black text-on-surface dark:text-inverse-on-surface">DevJournal</span>
+<p class="mt-md font-body-md text-body-md text-on-surface-variant max-w-sm">The world's leading publication for senior engineering talent. We bridge the gap between academic theory and production reality.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md font-bold mb-xs">Explore</h4>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface transition-all" href="#">About</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface transition-all" href="#">Careers</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface transition-all" href="#">API</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-label-md font-bold mb-xs">Legal</h4>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface transition-all" href="#">Privacy</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface transition-all" href="#">Terms</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-on-surface transition-all" href="#">RSS</a>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter py-lg border-t border-outline-variant/10 text-center md:text-left">
+<p class="font-label-md text-label-md text-outline">© 2024 DevJournal Editorial. Built for architects.</p>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface dark:bg-inverse-surface border-t border-outline-variant/30 dark:border-white/10 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] flex justify-around items-center h-16 px-4">
+<a class="text-primary dark:text-inverse-primary flex flex-col items-center gap-1 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span>Home</span>
+</a>
+<a class="text-on-surface-variant dark:text-surface-variant flex flex-col items-center gap-1 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span>Trending</span>
+</a>
+<a class="text-on-surface-variant dark:text-surface-variant flex flex-col items-center gap-1 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span>Bookmarks</span>
+</a>
+<a class="text-on-surface-variant dark:text-surface-variant flex flex-col items-center gap-1 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">person</span>
+<span>Profile</span>
+</a>
+</nav>
+<script>
+        // Simple logic for interest pills selection
+        document.querySelectorAll('.topic-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                this.classList.toggle('bg-primary-container');
+                this.classList.toggle('text-on-primary-container');
+                this.classList.toggle('border-primary');
+            });
+        });
+
+        // Floating action button logic if needed - suppressed per context rules
+    </script>
+</body></html>

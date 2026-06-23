@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manish Rana - Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c3c5d8",
+                        "inverse-on-surface": "#f0f0fc",
+                        "error-container": "#ffdad6",
+                        "surface": "#faf8ff",
+                        "outline": "#737687",
+                        "on-secondary-container": "#656460",
+                        "secondary-fixed": "#e5e2dc",
+                        "on-background": "#191b24",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-high": "#e7e7f4",
+                        "tertiary-fixed": "#ffdbcd",
+                        "surface-tint": "#0051df",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f3f3ff",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "on-tertiary-container": "#ffffff",
+                        "primary-container": "#2e6bff",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#cb4f00",
+                        "inverse-surface": "#2e3039",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "primary": "#0051de",
+                        "secondary-fixed-dim": "#c9c6c1",
+                        "on-tertiary-fixed": "#360f00",
+                        "on-primary-fixed": "#00174d",
+                        "on-secondary-fixed-variant": "#474743",
+                        "secondary": "#5f5e5a",
+                        "surface-dim": "#d9d9e5",
+                        "surface-variant": "#e1e1ee",
+                        "on-tertiary-fixed-variant": "#7c2d00",
+                        "inverse-primary": "#b5c4ff",
+                        "secondary-container": "#e5e2dc",
+                        "surface-container": "#ededf9",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#a33e00",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#434655",
+                        "surface-container-highest": "#e1e1ee",
+                        "primary-fixed": "#dbe1ff",
+                        "on-surface": "#191b24",
+                        "background": "#ffffff",
+                        "on-primary-fixed-variant": "#003dab",
+                        "surface-bright": "#faf8ff",
+                        "on-secondary-fixed": "#1c1c18"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "sm": "8px",
+                        "3xl": "64px",
+                        "safe-margin": "20px",
+                        "lg": "24px",
+                        "2xl": "48px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "caption": ["Inter"],
+                        "small": ["Inter"],
+                        "body-bold": ["Inter"],
+                        "body": ["Inter"],
+                        "h3": ["Inter"],
+                        "display": ["Inter"],
+                        "h1": ["Inter"],
+                        "h2": ["Inter"],
+                        "h1-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "caption": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "small": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-bold": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "body": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "h3": ["20px", {"lineHeight": "26px", "fontWeight": "600"}],
+                        "display": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h1": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "h2": ["24px", {"lineHeight": "30px", "fontWeight": "600"}],
+                        "h1-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #ffffff;
+            color: #191B24;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tab-active {
+            border-bottom: 1px solid #191b24;
+            color: #191b24;
+        }
+        .sidebar-border {
+            border-left: 1px solid #f2f3ff;
+        }
+    </style>
+</head>
+<body class="font-body">
+<div class="max-w-[1200px] mx-auto min-h-screen flex flex-col md:flex-row">
+<!-- Main Content Area (Left) -->
+<main class="flex-1 px-safe-margin md:px-xl py-xl">
+<!-- Header -->
+<header class="flex justify-between items-center mb-xl">
+<h1 class="text-[42px] font-bold text-on-surface tracking-tight">Manish Rana</h1>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[28px]">more_horiz</span>
+</button>
+</header>
+<!-- Sub-navigation Tabs -->
+<nav class="flex gap-lg border-b border-surface-container-high mb-xl">
+<button class="pb-3 text-body font-medium tab-active">Home</button>
+<button class="pb-3 text-body font-medium text-on-surface-variant hover:text-on-surface transition-colors">Activity</button>
+<button class="pb-3 text-body font-medium text-on-surface-variant hover:text-on-surface transition-colors">About</button>
+</nav>
+<!-- Content Section -->
+<section>
+<div class="bg-[#f9f9f9] border border-surface-container-high rounded-lg p-xl flex items-start justify-between min-h-[160px]">
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-primary-container flex items-center justify-center">
+<img alt="Avatar" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Manish'" src="https://lh3.googleusercontent.com/a/ACg8ocL_R_j_m_f_v_p_n_s_d_e_v_l_i_o_n_i_l_l_u_s_t_r_a_t_i_o_n"/>
+</div>
+<span class="text-caption font-medium">Manish Rana</span>
+</div>
+<h2 class="text-h2 font-bold text-on-surface">Reading list</h2>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="text-caption">No stories</span>
+<span class="material-symbols-outlined text-[14px]">lock</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Sidebar (Right) -->
+<aside class="w-full md:w-[380px] px-safe-margin md:px-xl py-xl sidebar-border">
+<div class="sticky top-xl">
+<!-- Profile Identity -->
+<div class="mb-xl">
+<div class="w-[88px] h-[88px] rounded-full overflow-hidden mb-md">
+<img alt="Manish Rana" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDxLaOfB9SCsYfg-vFQIsr8QPJi6V6Rtj5mJ1vYx5KyPikDL1m3ufWUuxSvXEvWJhiiSaDVchMCZVm1y0uQ5ig0gPw-k1o1D6LHQ_BXAq0j_NxAoj8ppCXvgRqlzb3IqQ2FE12ZZJLVgs-PmgEhUmScLkbdQhobN868HHCULht1WBP3Vk4JPvRWDyAA4douvg8m2eNgobLgYvFcpa3ERS1qsaCRkL7IPyHnmvqp9SHK-yNbei7vbm89PbRRSYAw-k9QIrvCEtyWow"/>
+</div>
+<h3 class="text-body-bold text-on-surface mb-xs">Manish Rana</h3>
+<a class="text-primary text-small hover:underline" href="#">Edit profile</a>
+</div>
+<!-- Following Section -->
+<div>
+<h4 class="text-body-bold text-on-surface mb-md">Following</h4>
+<div class="space-y-md mb-lg">
+<!-- Follow Item 1 -->
+<div class="flex items-center justify-between group">
+<div class="flex items-center gap-md">
+<div class="w-6 h-6 rounded bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="" class="w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAheB8MabrPkZJlqb0xkt89l6Ojh294qK8yc0CcZxxUkX2aCKrpy6ze8t8YPqfRbU2IhNi1kutSgIVn3NQcNZCDg_ofhreI5dF4ZrL6pjDLn6cNrozP2hl2aMhiab98SN8IgGZmmuBpcGw6cEkkz27_sjIZMGXPVOhapKs4PdoJE3JQn1euIiCtmAaARZySCSYRHTcFGNbLTyZbTZwtmqiP4z-DJvbcGwhv-aNcv9iksrgZYD4rwDfde5aF46x7A0osw8c2K4rU-H4"/>
+</div>
+<span class="text-small text-on-surface">Code Like A Girl</span>
+</div>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<!-- Follow Item 2 -->
+<div class="flex items-center justify-between group">
+<div class="flex items-center gap-md">
+<img alt="" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_O6FX-a7g3Z3Di9ZVvOEbpmwV0NJEBclsAXX5OQTRjKcOBYnvoVnmpHt0Nvr4WtRhFAZoWaFrXYnkgnsjj8WgPIjTV0fvp0DSphC9Awd3Jv4AVZE01XPsaB0ARncm7JCThaOvDn5aDysofIiuAWXDRdRY8EzPGXGnt8IqCG78n91oeJUmDwh3IjKltTSLuEm4d6R47G4LEFUw0UGs4FMb3dY2WAlhQWjA3wQvdTXPYKAAi_EHztWHz7fFELKVdsXhhNBdx_4lWfo"/>
+<span class="text-small text-on-surface">Victoria Muggridge</span>
+</div>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<!-- Follow Item 3 -->
+<div class="flex items-center justify-between group">
+<div class="flex items-center gap-md">
+<img alt="" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmoKo5vFEJ69EZsvfJHbxUn9FO9fL-6K4BTCbT0X_6vDz_wK0gd0fjjTjH9G5knqwJGwwyisLmTjrORnwB8_VeGdt9-xBeBO_YT30O2SKZx1c2uP3NB-Xwrv__ObslCsFDI78UglTVqAUnl2mFuVjYSQawetcLyemb8O6H0FFKAyVZT47Ee7DbkC-vJbitqopr_6EGUbWIWCz62mpQUfRz_zL_02QMWW0zQx7bocaABl9LeKA0WILjr6M-6ieDby81hxyCQOnYmjk"/>
+<span class="text-small text-on-surface">The Knowledge of Laughter</span>
+</div>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<!-- Follow Item 4 -->
+<div class="flex items-center justify-between group">
+<div class="flex items-center gap-md">
+<img alt="" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTkp4oB0ENMTDirkzOBJererJmjtdgA3SmdXWm4X7yqyW6xSXqzbb3XFCSQK_2Ek_gH5dRWy8AdEkFiHSrG1EQy_Fz-4Sv4bT-Eil0lyVzO4kwnFTfTHwkyyS9mfKo2_5Z1WX_Bwp0RP66q9MLP5HGXv3pxItzpBPVIRHFeN_Rz1k9r8AcHSA9rq1F9IjTiZxTuXR-3BO379ftWdJstSS2MnEhjdtuFAwBWOA06Sl8K2ol_PDOv23jUicjXjaoC6wYcj-d5jKCKd8"/>
+<span class="text-small text-on-surface">Mehul Gupta</span>
+</div>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+<!-- Follow Item 5 -->
+<div class="flex items-center justify-between group">
+<div class="flex items-center gap-md">
+<div class="w-6 h-6 rounded bg-surface-container flex items-center justify-center font-bold text-[10px]">PS</div>
+<span class="text-small text-on-surface">Puzzle Sphere</span>
+</div>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</div>
+</div>
+<a class="text-small text-on-surface-variant hover:text-on-surface transition-colors" href="#">See all (48)</a>
+</div>
+</div>
+</aside>
+</div>
+<!-- Footer Meta -->
+<footer class="max-w-[1200px] mx-auto px-safe-margin md:px-xl py-lg text-on-surface-variant">
+<p class="text-caption">HabitFlow v2.4.1 • DevJournal Editorial Engine</p>
+</footer>
+</body></html>

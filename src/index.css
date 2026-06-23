@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-grid {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.18) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+  .bg-grid-sm {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+}
+
+body {
+  font-family: 'Space Grotesk', 'Lexend', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

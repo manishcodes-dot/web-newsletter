@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DevJournal | The Future of WebAssembly in Cloud Computing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Geist Font simulation using system stacks that mirror its look -->
+<style>
+        :root {
+            --geist-font: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            font-family: var(--geist-font);
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .reading-progress-container {
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            position: fixed;
+            top: 64px; /* Height of TopAppBar */
+            left: 0;
+            z-index: 51;
+        }
+        #progress-bar {
+            height: 100%;
+            background: #004ac6; /* primary */
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .code-block-header {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#d2d9f4",
+                      "outline-variant": "#c3c6d7",
+                      "tertiary-fixed": "#ffdbcd",
+                      "on-secondary-fixed": "#0d1c2e",
+                      "inverse-on-surface": "#eef0ff",
+                      "surface-container-high": "#e2e7ff",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "tertiary": "#943700",
+                      "on-primary-container": "#eeefff",
+                      "primary-fixed": "#dbe1ff",
+                      "surface-bright": "#faf8ff",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#ffede6",
+                      "on-surface-variant": "#434655",
+                      "on-surface": "#131b2e",
+                      "on-background": "#131b2e",
+                      "secondary-container": "#d5e3fc",
+                      "background": "#faf8ff",
+                      "on-primary-fixed": "#00174b",
+                      "on-secondary-fixed-variant": "#3a485b",
+                      "secondary": "#515f74",
+                      "outline": "#737686",
+                      "on-primary": "#ffffff",
+                      "inverse-primary": "#b4c5ff",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#2563eb",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#b9c7df",
+                      "on-tertiary-fixed-variant": "#7d2d00",
+                      "surface-container-low": "#f2f3ff",
+                      "primary": "#004ac6",
+                      "secondary-fixed": "#d5e3fc",
+                      "surface": "#faf8ff",
+                      "surface-container": "#eaedff",
+                      "on-error": "#ffffff",
+                      "tertiary-container": "#bc4800",
+                      "surface-tint": "#0053db",
+                      "inverse-surface": "#283044",
+                      "surface-variant": "#dae2fd",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "surface-container-highest": "#dae2fd",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "on-secondary-container": "#57657a",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed": "#360f00",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "container-max": "1200px",
+                      "base": "8px",
+                      "xxl": "64px",
+                      "content-max": "720px"
+              },
+              "fontFamily": {
+                      "label-md": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "display": ["Geist"],
+                      "body-md": ["Geist"],
+                      "body-lg": ["Geist"],
+                      "code": ["JetBrains Mono"],
+                      "headline-md": ["Geist"],
+                      "headline-lg-mobile": ["Geist"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "27.2px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "30.6px", "fontWeight": "400"}],
+                      "code": ["14px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-md shadow-sm border-b border-outline-variant/30 dark:border-white/10">
+<div class="flex items-center justify-between px-gutter max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-xl">
+<a class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface" href="#">DevJournal</a>
+<nav class="hidden lg:flex items-center gap-lg">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors font-body-md text-body-md" href="#">News</a>
+<a class="text-primary dark:text-inverse-primary font-semibold border-b-2 border-primary dark:border-inverse-primary pb-1 font-body-md text-body-md" href="#">Web Dev</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors font-body-md text-body-md" href="#">AI</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors font-body-md text-body-md" href="#">Security</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors font-body-md text-body-md" href="#">Cloud</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-container-low dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 text-on-surface-variant">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/20 ml-2">
+<img class="w-full h-full object-cover" data-alt="A professional studio headshot of a software architect in their 30s with a warm, intelligent expression. The lighting is soft and directional, typical of a high-end editorial profile. The background is a clean, minimalist office space with subtle bokeh effects and a sophisticated palette of soft greys and blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4XIBoRIHLEIZBp519aP7sn4Aup9dcgP5eirBBhnOxYj5OqapRrgsV3C1RmmubmqhufQK5Qqy8nV1S-l9vHRtl-Rye2EpxCcPckFUT7RGM_e8ToHEM4oj3zE9i3p48mjis3AW_59HkGgPbr2gkES0Lzq_yb2nQ8AEgSqHSHmfTTHk4JiqElhwYzbTO_gzXZraVCtXFisldfaVI5SnOKA32xh-VCboPqg1tgCuRRfcDtS7VtNPxBhHOFycF0Dle-jHzIV22_yEPTqw"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Reading Progress Bar -->
+<div class="reading-progress-container">
+<div id="progress-bar"></div>
+</div>
+<!-- Main Content Layout -->
+<main class="pt-xxl pb-xxl">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-12 gap-lg mt-md">
+<!-- Left Sidebar: TOC & Share (Sticky) -->
+<aside class="hidden md:block md:col-span-2">
+<div class="sticky top-xxl space-y-xl">
+<div>
+<h3 class="text-label-md font-label-md uppercase tracking-wider text-outline mb-md">Table of Contents</h3>
+<nav class="space-y-sm">
+<a class="block text-body-md font-body-md text-primary border-l-2 border-primary pl-4 transition-all" href="#introduction">Introduction</a>
+<a class="block text-body-md font-body-md text-on-surface-variant hover:text-on-surface border-l-2 border-transparent pl-4 transition-all" href="#architecture">Core Architecture</a>
+<a class="block text-body-md font-body-md text-on-surface-variant hover:text-on-surface border-l-2 border-transparent pl-4 transition-all" href="#performance">Performance Benchmarks</a>
+<a class="block text-body-md font-body-md text-on-surface-variant hover:text-on-surface border-l-2 border-transparent pl-4 transition-all" href="#conclusion">Future Outlook</a>
+</nav>
+</div>
+<div class="flex flex-col gap-md">
+<button class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-all">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-all">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-all">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Article Body -->
+<article class="md:col-span-7 col-span-1 space-y-xl">
+<!-- Article Header -->
+<header class="space-y-md">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary font-label-md text-label-md">Web Dev</span>
+<h1 class="font-display text-display leading-tight tracking-tight text-on-surface">The Future of WebAssembly in Distributed Cloud Systems</h1>
+<div class="flex items-center gap-md py-md border-y border-outline-variant/30">
+<div class="h-12 w-12 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a female developer with glasses, looking thoughtfully into the distance. She is wearing a modern tech-casual outfit. The scene is shot with a shallow depth of field in a brightly lit, modern co-working space with large windows and lush green plants in the blurred background. Light mode aesthetic with clean whites and soft natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNrboi02BQoQmEUYfGMUXB0JbtxKO4y9yxNIqQwS7EjRZBCmzrZ0q8qMW0GLynioazy3Bwo651zfg_TtkVgzns3kknTM9-uAOBIo9YxhA34C3N7vWzqSQunCF97MZh_b_QBpMY-90bhDI7DjONjI627SCSB_OTm2tZAXN1DS6rDvz_qt8DN1WMnPg4LGla-feACUdgLDW_cfGCxsecXXMopvrzivYsByOUGEgHCtsseJ0lpFeSLXePF8wJ7Nr4FMqnUa1XkjVlzvc"/>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-body-md font-bold">Elena Rodriguez</span>
+<span class="font-body-md text-label-md text-on-surface-variant">Principal Engineer · May 12, 2024 · 12 min read</span>
+</div>
+</div>
+</header>
+<!-- Cover Image -->
+<figure class="w-full aspect-video rounded-xl overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A high-tech digital illustration representing WebAssembly and cloud architecture. The image features a network of glowing nodes and crystalline structures suspended in a clean, vast white digital void. The color palette consists of deep blues, electric primary blue, and subtle hints of silver. The style is ultra-modern, crisp, and high-contrast, evoking a sense of speed and technical sophistication." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB0e-zBuSmVP-03YfGtEtoq8utBZvA3aV7qMZwcN62y7dGlkSyTr4S3be0npyIWLn10Xq_QAlUeVYj4ZtSx7ci0NUwKcz-Mq63Id-JidQrXEoyAn3lvGrchY3QRSOR4iELQ_22M_fnag0AgJsEeg81aS8jApDSJLmxfmB_EivgF7zVYK7JK07uHiE0PcqoCyqoYtMl5bCcdbeYiv-Y2pDYyXS5T6wEg_GUDupW77m0N8eSRhXddwFoK6KIP_r-Ztv-kNoHrqhcziU"/>
+<figcaption class="mt-sm text-center text-label-md text-on-surface-variant font-body-md italic">Visualizing the orchestration of Wasm modules in a serverless environment.</figcaption>
+</figure>
+<!-- Content Area -->
+<div class="max-w-content-max mx-auto space-y-lg text-body-lg font-body-lg text-on-surface selection:bg-primary/20">
+<p id="introduction">For years, the promise of WebAssembly (Wasm) was primarily confined to the browser—enabling high-performance gaming, video editing, and complex simulations. However, we are witnessing a tectonic shift as Wasm moves beyond the frontend into the heart of cloud infrastructure.</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface pt-md" id="architecture">Rethinking Core Architecture</h2>
+<p>Wasm provides a secure, lightweight sandbox that is significantly more portable than Docker containers. In a distributed environment, the cold-start times of traditional VMs and containers often become the primary bottleneck. Wasm modules, on the other hand, can initialize in microseconds.</p>
+<!-- Code Snippet -->
+<div class="rounded-xl overflow-hidden bg-inverse-surface text-surface shadow-md">
+<div class="flex items-center justify-between px-md py-sm code-block-header bg-white/5">
+<span class="font-code text-label-md opacity-80 uppercase tracking-widest">rust / wasm-bindgen</span>
+<button class="flex items-center gap-1 hover:text-primary-fixed transition-colors active:scale-95" onclick="copyCode(this)">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+<span class="text-label-md">Copy</span>
+</button>
+</div>
+<pre class="p-md overflow-x-auto font-code text-code leading-relaxed"><code>#[wasm_bindgen]
+pub fn process_data(input: &amp;str) -&gt; String {
+    let result = input.to_uppercase();
+    format!("Processed: {}", result)
+}
+
+// Low-latency distributed invocation
+pub async fn deploy_to_edge(wasm_bytes: Vec&lt;u8&gt;) {
+    let module = Module::from_binary(&amp;wasm_bytes).unwrap();
+    // Cold start &lt; 10ms
+}</code></pre>
+</div>
+<p>The isolation model of Wasm is fundamentally different. Instead of relying on OS-level primitives like cgroups and namespaces, Wasm uses a capability-based security model. This allows us to run code with near-native performance while maintaining strict boundaries.</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface pt-md" id="performance">Performance Benchmarks</h2>
+<p>In our internal testing, migrating our image processing pipeline from Node.js Docker containers to Wasm-on-Edge resulted in a 40% reduction in memory overhead and a 3x improvement in horizontal scaling speed.</p>
+<!-- Table/Data View -->
+<div class="overflow-x-auto border border-outline-variant/30 rounded-xl my-xl">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low border-b border-outline-variant/30">
+<tr>
+<th class="p-md font-headline-md text-label-md uppercase text-on-surface-variant">Platform</th>
+<th class="p-md font-headline-md text-label-md uppercase text-on-surface-variant">Cold Start</th>
+<th class="p-md font-headline-md text-label-md uppercase text-on-surface-variant">Memory Footprint</th>
+</tr>
+</thead>
+<tbody class="font-body-md">
+<tr class="border-b border-outline-variant/10">
+<td class="p-md font-bold">Traditional Docker</td>
+<td class="p-md">450ms</td>
+<td class="p-md">124MB</td>
+</tr>
+<tr class="border-b border-outline-variant/10">
+<td class="p-md font-bold">Firecracker VM</td>
+<td class="p-md">120ms</td>
+<td class="p-md">64MB</td>
+</tr>
+<tr>
+<td class="p-md font-bold text-primary">WebAssembly (Wasm)</td>
+<td class="p-md font-bold text-primary">8ms</td>
+<td class="p-md font-bold text-primary">4MB</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p id="conclusion">As we look toward the future, the integration of Wasm with Kubernetes and Edge computing providers will redefine what "serverless" truly means. The goal is a seamless execution fabric where code runs exactly where it's needed, with zero overhead.</p>
+</div>
+<!-- Tags -->
+<div class="flex flex-wrap gap-sm pt-xl border-t border-outline-variant/30">
+<span class="px-3 py-1 bg-surface-container-high rounded-lg text-label-md font-body-md hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer">#webassembly</span>
+<span class="px-3 py-1 bg-surface-container-high rounded-lg text-label-md font-body-md hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer">#cloud-native</span>
+<span class="px-3 py-1 bg-surface-container-high rounded-lg text-label-md font-body-md hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer">#rust</span>
+<span class="px-3 py-1 bg-surface-container-high rounded-lg text-label-md font-body-md hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer">#serverless</span>
+</div>
+<!-- Reaction System -->
+<div class="flex items-center gap-lg py-xl">
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl border border-outline-variant/50 hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-label-md">Insightful · 244</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl border border-outline-variant/50 hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="font-label-md">Brilliant · 128</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl border border-outline-variant/50 hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-md">Agreed · 56</span>
+</button>
+</div>
+<!-- Related Articles Section -->
+<section class="space-y-lg pt-xxl">
+<h3 class="font-headline-md text-headline-md">Continue Reading</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-lg">
+<!-- Related Card 1 -->
+<a class="group block space-y-md" href="#">
+<div class="aspect-video rounded-xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A minimalist architectural photograph of a spiral staircase shot from directly above. The geometry is perfectly circular with sharp shadows and bright highlights. The aesthetic is clean and light-mode with high-end designer vibes. The color palette is composed of soft whites, neutral greys, and a single accent of primary blue on the handrail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDImpRAIFOPbqDthnPj9vNeBAfY6hrgBUXpLJ5KAWEyLw0NXt9PKB_a0s5-XD0DcgDMQSdkvvt1xPbE9-_EahuP8_3BFsYPv7-4EsVMyDepYcYpvOL22SDVAigsAvkoTpQTezw_H_-jN9qo53_HW7UsMVS0AfxLBSbtCYG0ZwSNAILl9NL2ZDda2A1PTGeH81hHqNldwd_K9vGmr3it30touJD2lKw88gU9JAX18mv6oB6Gj347JjB5NZQdbUSPY7LIlUSWHOyebhI"/>
+</div>
+<div class="space-y-sm">
+<span class="text-label-md font-body-md text-on-surface-variant uppercase tracking-wider">Kubernetes</span>
+<h4 class="font-headline-md text-body-md font-bold group-hover:text-primary transition-colors">Optimizing K8s Clusters for High-Density Wasm Workloads</h4>
+</div>
+</a>
+<!-- Related Card 2 -->
+<a class="group block space-y-md" href="#">
+<div class="aspect-video rounded-xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An abstract digital rendering of data flowing through fiber optic cables. The light is diffused and soft, creating a bokeh effect with vibrant blue and white glows. The background is a clean, off-white gradient that feels airy and modern. The composition is dynamic yet organized, following a strict 8pt grid structure in its visual arrangement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz_eHRWtkN5qP9Tt3taQhp8g99CgKculc2w-mE8gQ9hazSewhYvBAFhJAktxJBiFKtszuATWlokCoWzQgjQv9RRwx2kCLHbnz4y_e4nBGFDCEne6gDvFzxrrkj9IMZ1OAxf97Vw9S1u94kvH6lRrfMWjBdjXhMLAB4GMD9b3YY-sTVbXe07Yh2-WUyIkAqZPp5D4gIudU1fUX9gRf72WSgtBTMxkGUDqDWSv-zM4ZmbWsd0cnygOEyiXnG1YxOpgN6Ywwa2znbkCE"/>
+</div>
+<div class="space-y-sm">
+<span class="text-label-md font-body-md text-on-surface-variant uppercase tracking-wider">Networking</span>
+<h4 class="font-headline-md text-body-md font-bold group-hover:text-primary transition-colors">The State of HTTP/3 and QUIC in Edge Computing</h4>
+</div>
+</a>
+</div>
+</section>
+<!-- Comments Section -->
+<section class="pt-xxl space-y-lg">
+<h3 class="font-headline-md text-headline-md">Comments (32)</h3>
+<div class="p-md rounded-xl bg-surface-container-lowest border border-outline-variant/30 space-y-md shadow-sm">
+<textarea class="w-full p-md bg-background border-outline-variant/50 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-body-md h-24" placeholder="Share your thoughts..."></textarea>
+<div class="flex justify-end">
+<button class="bg-primary text-on-primary px-lg py-2 rounded-lg font-label-md hover:shadow-lg transition-all active:scale-95">Post Comment</button>
+</div>
+</div>
+<!-- Individual Comment -->
+<div class="flex gap-md pt-lg">
+<div class="h-10 w-10 rounded-full bg-surface-container overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional profile picture of a young male software engineer. He is smiling warmly, wearing a simple grey t-shirt. The background is a soft-focus indoor office setting with warm wood textures and modern lighting. High-quality editorial style with a focus on approachable, intelligent character." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpC1WIQErcqafBSy3Riwxn2dJDHnglyD3qb11Ex98-bT0i2xSzOh_7lbAQlzMLhPPuUXHYqxPxOsDWxA6xVNdg6wwYgRc4s0mjUjejQhG65VMlOd-6H97g5QsgBbQIPlQSGDN2FPwyvEitEpyEZPmPNfpgAhLeBC05RNTFh87A34f4GU35pAE-yxeX47Mwz5AH6hPx2Mz_s0npJOGyC1ovKRCSDhWKd7iIrsoqOS3S06yrQmAZtVrh0LlhM7OmEzfSSyU3TgLu3nM"/>
+</div>
+<div class="space-y-sm flex-1">
+<div class="flex items-center gap-md">
+<span class="font-bold text-body-md">Marcus Thorne</span>
+<span class="text-label-md text-on-surface-variant">2 hours ago</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface">This is the most comprehensive take on Wasm cloud adoption I've read this year. The micro-cold-start times are truly a game changer for real-time data streaming applications.</p>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary font-label-md">
+<span class="material-symbols-outlined text-[16px]">thumb_up</span>
+                                    12
+                                </button>
+<button class="text-on-surface-variant hover:text-primary font-label-md">Reply</button>
+</div>
+</div>
+</div>
+</section>
+</article>
+<!-- Right Sidebar: Author & Trending -->
+<aside class="hidden md:block md:col-span-3 space-y-xl">
+<div class="sticky top-xxl space-y-xl">
+<!-- Author Profile Card -->
+<div class="p-lg rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm space-y-md">
+<div class="flex flex-col items-center text-center space-y-sm">
+<div class="h-20 w-20 rounded-full bg-surface-container-high overflow-hidden mb-sm ring-4 ring-primary/5">
+<img class="w-full h-full object-cover" data-alt="A high-quality editorial headshot of Elena Rodriguez, a Principal Engineer. She has a confident, professional look, wearing a black blazer. The lighting is soft and flattering, coming from the side. The background is a minimalist, clean white wall with a hint of a modern architectural shadow. Modern and sophisticated light mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCc2wGnHViVCozS7wct_NBWOcdIQzDGDFi5gCPkBpgLm2um_dtXoycFY3adkR8c-ZxUsJ98pxEE6jWaDuniID5R32zDzw37kwm6iKM2DDPVuysMf6V_6r-vwQLAdQNLbaEIG0Cooj_xyBE_z7XMfwClL6hZD-uXFRtXjSo43NhfS-b_tKM-OCNju9nDBgAiYuK9kwAFq8s8yg2VEH1lLb-L04qpG2n4192zSrhzJg_6EmEs1toiqgdO88TSRR7kFODDNNbok9dog8"/>
+</div>
+<h4 class="font-headline-md text-headline-md">Elena Rodriguez</h4>
+<p class="text-label-md text-on-surface-variant font-body-md">Building the future of distributed systems. Principal Engineer at ScaleCloud.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<button class="w-full bg-primary text-on-primary py-2 rounded-lg font-label-md hover:shadow-md transition-all">Follow</button>
+<button class="w-full border border-outline-variant/50 text-on-surface py-2 rounded-lg font-label-md hover:bg-surface-container-low transition-all">View Profile</button>
+</div>
+</div>
+<!-- Trending Items -->
+<div class="space-y-md">
+<h3 class="text-label-md font-label-md uppercase tracking-wider text-outline">Trending this week</h3>
+<div class="space-y-lg">
+<div class="flex gap-md group cursor-pointer">
+<span class="text-headline-md font-black text-outline-variant group-hover:text-primary transition-colors">01</span>
+<div class="space-y-xs">
+<h5 class="text-body-md font-bold leading-tight group-hover:text-primary transition-colors">The 2024 Developer Ecosystem Report</h5>
+<span class="text-label-md text-on-surface-variant">5 min read</span>
+</div>
+</div>
+<div class="flex gap-md group cursor-pointer">
+<span class="text-headline-md font-black text-outline-variant group-hover:text-primary transition-colors">02</span>
+<div class="space-y-xs">
+<h5 class="text-body-md font-bold leading-tight group-hover:text-primary transition-colors">Securing Large Language Models in Prod</h5>
+<span class="text-label-md text-on-surface-variant">15 min read</span>
+</div>
+</div>
+<div class="flex gap-md group cursor-pointer">
+<span class="text-headline-md font-black text-outline-variant group-hover:text-primary transition-colors">03</span>
+<div class="space-y-xs">
+<h5 class="text-body-md font-bold leading-tight group-hover:text-primary transition-colors">Why we moved from React to HTMX</h5>
+<span class="text-label-md text-on-surface-variant">8 min read</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-xxl bg-surface-container-low dark:bg-surface-container-lowest/5 border-t border-outline-variant/20 dark:border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg px-gutter py-xl max-w-container-max mx-auto">
+<div class="md:col-span-1 space-y-md">
+<span class="font-headline-md text-headline-md font-black text-on-surface dark:text-inverse-on-surface">DevJournal</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Engineering excellence, one article at a time.</p>
+</div>
+<div class="space-y-sm">
+<h5 class="font-label-md font-bold uppercase text-outline">Product</h5>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-on-surface transition-all hover:underline font-body-md" href="#">Features</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-all hover:underline font-body-md" href="#">API</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-all hover:underline font-body-md" href="#">RSS</a>
+</nav>
+</div>
+<div class="space-y-sm">
+<h5 class="font-label-md font-bold uppercase text-outline">Company</h5>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-on-surface transition-all hover:underline font-body-md" href="#">About</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-all hover:underline font-body-md" href="#">Careers</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-all hover:underline font-body-md" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-all hover:underline font-body-md" href="#">Terms</a>
+</nav>
+</div>
+<div class="space-y-sm">
+<h5 class="font-label-md font-bold uppercase text-outline">Newsletter</h5>
+<p class="text-on-surface-variant font-body-md text-body-md">Get the best of dev news delivered weekly.</p>
+<div class="flex gap-2">
+<input class="flex-1 rounded-lg border-outline-variant bg-surface px-3 py-1 focus:ring-primary focus:border-primary" placeholder="Email" type="email"/>
+<button class="bg-primary text-on-primary px-4 py-1 rounded-lg font-label-md transition-all active:scale-95">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter py-md border-t border-outline-variant/10">
+<p class="font-body-md text-body-md text-on-surface-variant text-center opacity-80">© 2024 DevJournal Editorial. Built for architects.</p>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface dark:bg-inverse-surface border-t border-outline-variant/30 dark:border-white/10 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] flex justify-around items-center h-16 px-4">
+<a class="text-on-surface-variant flex flex-col items-center gap-1 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="text-primary dark:text-inverse-primary flex flex-col items-center gap-1 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+<span class="font-label-md text-label-md">Trending</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="font-label-md text-label-md">Bookmarks</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        // Reading Progress Logic
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        // Micro-interaction for copy button
+        function copyCode(btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span><span class="text-label-md">Copied!</span>';
+            btn.classList.add('text-primary-fixed');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('text-primary-fixed');
+            }, 2000);
+        }
+
+        // Active TOC state simulation
+        const sections = document.querySelectorAll('h2, #introduction');
+        const navLinks = document.querySelectorAll('aside nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 120) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary', 'border-primary');
+                link.classList.add('text-on-surface-variant', 'border-transparent');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-primary', 'border-primary');
+                    link.classList.remove('text-on-surface-variant', 'border-transparent');
+                }
+            });
+        });
+    </script>
+</body></html>

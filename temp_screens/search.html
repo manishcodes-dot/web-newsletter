@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Search Results | DevJournal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#d2d9f4",
+                      "outline-variant": "#c3c6d7",
+                      "tertiary-fixed": "#ffdbcd",
+                      "on-secondary-fixed": "#0d1c2e",
+                      "inverse-on-surface": "#eef0ff",
+                      "surface-container-high": "#e2e7ff",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "tertiary": "#943700",
+                      "on-primary-container": "#eeefff",
+                      "primary-fixed": "#dbe1ff",
+                      "surface-bright": "#faf8ff",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#ffede6",
+                      "on-surface-variant": "#434655",
+                      "on-surface": "#131b2e",
+                      "on-background": "#131b2e",
+                      "secondary-container": "#d5e3fc",
+                      "background": "#faf8ff",
+                      "on-primary-fixed": "#00174b",
+                      "on-secondary-fixed-variant": "#3a485b",
+                      "secondary": "#515f74",
+                      "outline": "#737686",
+                      "on-primary": "#ffffff",
+                      "inverse-primary": "#b4c5ff",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#2563eb",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#b9c7df",
+                      "on-tertiary-fixed-variant": "#7d2d00",
+                      "surface-container-low": "#f2f3ff",
+                      "primary": "#004ac6",
+                      "secondary-fixed": "#d5e3fc",
+                      "surface": "#faf8ff",
+                      "surface-container": "#eaedff",
+                      "on-error": "#ffffff",
+                      "tertiary-container": "#bc4800",
+                      "surface-tint": "#0053db",
+                      "inverse-surface": "#283044",
+                      "surface-variant": "#dae2fd",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "surface-container-highest": "#dae2fd",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "on-secondary-container": "#57657a",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed": "#360f00",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "container-max": "1200px",
+                      "base": "8px",
+                      "xxl": "64px",
+                      "content-max": "720px"
+              },
+              "fontFamily": {
+                      "label-md": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "display": ["Geist"],
+                      "body-md": ["Geist"],
+                      "body-lg": ["Geist"],
+                      "code": ["JetBrains Mono"],
+                      "headline-md": ["Geist"],
+                      "headline-lg-mobile": ["Geist"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "27.2px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "30.6px", "fontWeight": "400"}],
+                      "code": ["14px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm h-16">
+<div class="flex items-center justify-between px-gutter max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-xl">
+<a class="font-headline-md text-headline-md font-bold text-on-surface" href="#">DevJournal</a>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">News</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">AI</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Web Dev</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Security</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Cloud</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Open Source</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">bookmark</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a software engineer in their late 20s, featuring soft cinematic lighting and a neutral, minimalist background. The style is clean and high-end editorial, with the subject wearing a simple black turtleneck. The overall color palette is muted with deep blues and soft whites, reflecting a focused and modern professional identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQwquVuQYsVwmnRYZgOcgJlUA4O0Fdrf24Zq0_oA7p_cy18bvRybPF4MVYbb85wnM-0AxAr9eZ-2F9DansQKNZB21u66Ny-NYjApztgNlqksBXJ65CCudVkWS3lpHxldBX-JGsUmXDIFQEdHkjOTU-rJtMe8khSiKILjOzPXyt8-RqOb8Bms6ZtYE1b8_sX0DIX41sJ3fF7ByeblC8mn36GJxDvD2z1pRwMHf2HfJgBcFcOpK8fB-qxcz89_41AvZlgFd81m1zY6I"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-xxl min-h-screen">
+<div class="max-w-container-max mx-auto px-gutter py-xl">
+<!-- Hero Search Section -->
+<section class="mb-xl">
+<div class="max-w-content-max">
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary text-[28px]">search</span>
+</div>
+<input class="w-full pl-14 pr-6 py-5 bg-surface-container-lowest border-outline-variant/50 border rounded-xl font-headline-md text-headline-md focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm group-hover:shadow-md outline-none" placeholder="Search for articles, authors, or tags..." type="text" value="React performance optimization"/>
+<div class="absolute inset-y-0 right-4 flex items-center">
+<kbd class="hidden sm:inline-block px-2 py-1 text-xs font-code bg-surface-container-high text-on-surface-variant rounded border border-outline-variant/30 uppercase">Esc</kbd>
+</div>
+</div>
+<p class="mt-md text-on-surface-variant font-label-md text-label-md">
+                        Showing results for <span class="text-primary font-semibold italic">"React performance optimization"</span> — about 1,240 results found in 0.24s
+                    </p>
+</div>
+</section>
+<!-- Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Main Results Column -->
+<div class="lg:col-span-8 space-y-lg">
+<!-- Filter Bar -->
+<div class="flex items-center gap-sm overflow-x-auto pb-2 hide-scrollbar">
+<button class="px-md py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md shadow-sm transition-all active:scale-95">All Results</button>
+<button class="px-md py-2 bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all active:scale-95">Articles</button>
+<button class="px-md py-2 bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all active:scale-95">Authors</button>
+<button class="px-md py-2 bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-md text-label-md transition-all active:scale-95">Tags</button>
+<div class="ml-auto flex items-center gap-sm border-l border-outline-variant/30 pl-lg">
+<span class="text-on-surface-variant font-label-md text-label-md hidden sm:inline">Sort by:</span>
+<select class="bg-transparent border-none font-label-md text-label-md text-primary focus:ring-0 cursor-pointer">
+<option>Relevance</option>
+<option>Newest</option>
+<option>Most Read</option>
+</select>
+</div>
+</div>
+<!-- Result List -->
+<div class="space-y-md">
+<!-- Result Item 1 -->
+<article class="p-lg bg-surface-container-lowest border border-outline-variant/20 rounded-xl hover:shadow-mid transition-all group">
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-sm">
+<span class="px-2 py-0.5 bg-primary/10 text-primary rounded font-code text-[12px] uppercase font-bold tracking-wider">Article</span>
+<span class="text-on-surface-variant font-label-md text-label-md">• May 12, 2024</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm group-hover:text-primary transition-colors cursor-pointer">Advanced Memoization Patterns in React 18+</h3>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-2 mb-md">
+                                        Deep dive into how the new scheduler impacts useMemo and useCallback. Learn when to avoid memoization and how to profile component re-renders effectively using the new Profiler API...
+                                    </p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">thumb_up</span>
+<span class="text-on-surface-variant font-label-md text-label-md">2.4k</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">chat_bubble</span>
+<span class="text-on-surface-variant font-label-md text-label-md">128</span>
+</div>
+<span class="text-on-surface-variant font-label-md text-label-md">12 min read</span>
+</div>
+<div class="flex gap-xs">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant rounded-md font-label-md text-[12px]">React</span>
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant rounded-md font-label-md text-[12px]">Performance</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0 border border-outline-variant/10">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-resolution, abstract 3D visualization of neural networks and data flow, representing high-performance computing. The scene features glowing neon lines of blue and electric indigo against a dark, professional background. The lighting is focused and directional, creating a sense of depth and technical complexity consistent with a premium developer publication." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT08gJsKwUyMikAo9OSBmMmLgeG6UplyjWNlvg8hBpJbAzu4ouO7gtYOnuJeLen7pE96iAaF60NyIWirRx4CSAWpEQR7VDuYAF-WF7lbklryx0-DmJ25wLV2d9sThSt3462--VDnm4HPneJkIXsQCYvo7HhPUB4USznKRetg5igoY89s3CaJSvbPlcyQuJCxJ3XPhtGziSU3iuxESpF01h2mt6Zagrg4HhbEiGSjEpigjFbmlgT8CRqPGg0SAjj7whJOGQBWRfSbg"/>
+</div>
+</div>
+</article>
+<!-- Result Item 2 (Author) -->
+<article class="p-lg bg-surface-container-lowest border border-outline-variant/20 rounded-xl hover:shadow-mid transition-all group flex items-center justify-between">
+<div class="flex items-center gap-lg">
+<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a senior cloud architect, wearing modern glasses, looking confidently at the camera. The setting is a bright, airy office with blurred architectural details in the background. The style is professional editorial with a focus on warm skin tones and sharp clarity, embodying expertise and reliability in the tech industry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnK6XxFn4cyCMMkPCQ2UbM4pWY5eBQUfaHHbig9SPTamrC6KrkAOr-CI3oChG-VH-aQtWg3np9GGD9w4R_ojPQ7Vf43UUztJvqW1f0Ss2TVi8cRM1JQK9lgxX8lQ8Z8BRCQ3bwKQAV2out2sRBY_hFE1bUFi5r-UP3RmNuPBhV08w7GvDA85Nmr2sP2x5xwn4wM1fQxulcZydTKlnV68N8d1QTM99NRADxXtOIw9TUWJdCZjN5HiKFqzQ1mBs6XH3UV3ut3kCxR54"/>
+</div>
+<div>
+<div class="flex items-center gap-sm">
+<h3 class="font-headline-md text-[20px] text-on-surface group-hover:text-primary transition-colors cursor-pointer">Sarah Drasner</h3>
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md">VP of Engineering at Netlify • Web Performance Expert</p>
+<p class="text-primary font-label-md text-label-md mt-xs">142 articles published • 45k followers</p>
+</div>
+</div>
+<button class="hidden sm:block px-lg py-2 border border-primary text-primary rounded-full font-label-md text-label-md hover:bg-primary/5 transition-all">Follow</button>
+</article>
+<!-- Result Item 3 -->
+<article class="p-lg bg-surface-container-lowest border border-outline-variant/20 rounded-xl hover:shadow-mid transition-all group">
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="flex-1">
+<div class="flex items-center gap-sm mb-sm">
+<span class="px-2 py-0.5 bg-primary/10 text-primary rounded font-code text-[12px] uppercase font-bold tracking-wider">Tutorial</span>
+<span class="text-on-surface-variant font-label-md text-label-md">• April 28, 2024</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm group-hover:text-primary transition-colors cursor-pointer">React-Native: Reanimated 3 Performance Hacks</h3>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-2 mb-md">
+                                        How to achieve 120fps animations on lower-end Android devices using the latest Reanimated worklets. We explore layout animations and heavy computation offloading...
+                                    </p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">thumb_up</span>
+<span class="text-on-surface-variant font-label-md text-label-md">890</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">chat_bubble</span>
+<span class="text-on-surface-variant font-label-md text-label-md">42</span>
+</div>
+<span class="text-on-surface-variant font-label-md text-label-md">18 min read</span>
+</div>
+<div class="flex gap-xs">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant rounded-md font-label-md text-[12px]">Mobile</span>
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant rounded-md font-label-md text-[12px]">React Native</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0 border border-outline-variant/10">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A minimalist digital illustration representing mobile app architecture. It shows a sleek, stylized smartphone silhouette with glowing geometric layers floating above the screen, connected by thin pulses of light. The color palette uses professional shades of grey, deep blue, and vibrant primary blue accents. High-key lighting creates a clean, premium tech-journalism aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSpnYbU9pweOi8TWQZV-McjZweaFK25IEEiYzKdewpCOrWZM__oUt-6jGoWzjRp2T2nLADxU4xfcDJw4TIhBpq94r1QUiX9dmBfGBOjxgkDfmFtNsLupDcO_4ddAIZzt3ok8LHrY634NdIvnj4QMTnqSVQvfhK8JqMpCSoGs6iE439KZJTuwdVr6HCPHZxqJwruDES-h-H4wl6B_RiGHLDQnSepnopxbMokyjpRsJ6qD72LvSooVPud7bhDra5eFtLwfWH3Oj8D34"/>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-center gap-sm pt-xl">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant/30 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md text-label-md">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant/30 hover:bg-surface-container-low font-label-md text-label-md transition-all">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant/30 hover:bg-surface-container-low font-label-md text-label-md transition-all">3</button>
+<span class="px-2">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant/30 hover:bg-surface-container-low font-label-md text-label-md transition-all">12</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant/30 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Sidebar -->
+<aside class="lg:col-span-4 space-y-xl">
+<!-- Recent Searches -->
+<div class="bg-surface-container-low/50 p-lg rounded-xl border border-outline-variant/20">
+<div class="flex items-center justify-between mb-md">
+<h4 class="font-headline-md text-[18px] text-on-surface">Recent Searches</h4>
+<button class="text-primary font-label-md text-label-md hover:underline">Clear</button>
+</div>
+<ul class="space-y-sm">
+<li class="flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">history</span>
+<span class="text-on-surface-variant font-body-md text-body-md group-hover:text-primary transition-colors">tailwind grid layouts</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/30 text-[18px] hover:text-error cursor-pointer">close</span>
+</li>
+<li class="flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">history</span>
+<span class="text-on-surface-variant font-body-md text-body-md group-hover:text-primary transition-colors">nextjs app router best practices</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/30 text-[18px] hover:text-error cursor-pointer">close</span>
+</li>
+<li class="flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">history</span>
+<span class="text-on-surface-variant font-body-md text-body-md group-hover:text-primary transition-colors">kubernetes ingress guide</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/30 text-[18px] hover:text-error cursor-pointer">close</span>
+</li>
+</ul>
+</div>
+<!-- Trending Searches -->
+<div class="bg-surface-container-low/50 p-lg rounded-xl border border-outline-variant/20">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<h4 class="font-headline-md text-[18px] text-on-surface">Trending Now</h4>
+</div>
+<div class="flex flex-wrap gap-xs">
+<a class="px-md py-2 bg-surface-container-lowest border border-outline-variant/30 rounded-lg font-label-md text-label-md hover:border-primary hover:text-primary transition-all" href="#">#LLM_Ops</a>
+<a class="px-md py-2 bg-surface-container-lowest border border-outline-variant/30 rounded-lg font-label-md text-label-md hover:border-primary hover:text-primary transition-all" href="#">#TypeScript_5.4</a>
+<a class="px-md py-2 bg-surface-container-lowest border border-outline-variant/30 rounded-lg font-label-md text-label-md hover:border-primary hover:text-primary transition-all" href="#">#Rust_Wasm</a>
+<a class="px-md py-2 bg-surface-container-lowest border border-outline-variant/30 rounded-lg font-label-md text-label-md hover:border-primary hover:text-primary transition-all" href="#">#Go_Generics</a>
+<a class="px-md py-2 bg-surface-container-lowest border border-outline-variant/30 rounded-lg font-label-md text-label-md hover:border-primary hover:text-primary transition-all" href="#">#Cybersecurity</a>
+</div>
+</div>
+<!-- Recommended Authors -->
+<div class="space-y-md">
+<h4 class="font-headline-md text-[18px] text-on-surface px-md">Related Authors</h4>
+<div class="space-y-sm">
+<div class="flex items-center gap-md p-md hover:bg-surface-container-low rounded-xl transition-all cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-dim border border-outline-variant/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist profile picture of a tech lead. The subject is a woman with short hair, wearing professional glasses and a simple white shirt. The background is a soft, solid pastel blue. The lighting is bright and even, conveying a sense of transparency, clarity, and modern design leadership." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwJRYYTmr8SH_ut7BCzhcIKZV5IadIrD61I0DnGmxFaqKAL9qeR1gTOXWv2m2hwn3HQeVEoKepNge459OdpsMPq_zKxukl-l_Mj0iJ7IeapLNS7RFGOVR9lJzxmJUdAnJjSrTzE0cZPoyh1olfFLjsrJZ1WKD39no_bErt5ZX3fVft0DywsKtqRw21WW2VMEPh-gfYyhJF484PelMAr3ERBdyABtOXXwJjmgI33IDOCZ7BHkGUCAMtuLLqBr3FYvsM8kJtFE-Q7cs"/>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Lin Clark</p>
+<p class="text-[12px] text-on-surface-variant">Wasm &amp; Compiler Expert</p>
+</div>
+<button class="text-primary font-label-md text-label-md">Follow</button>
+</div>
+<div class="flex items-center gap-md p-md hover:bg-surface-container-low rounded-xl transition-all cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-dim border border-outline-variant/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Professional studio portrait of a young male software developer. He has a friendly expression and is looking directly at the camera. He's wearing a casual dark grey hoodie. The lighting is soft and flattering, with a clean, light-grey studio background. The style is modern, approachable, and high-quality digital photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALbY8ckx4Z-sStRwSBnA6SsItIogcmhipHaSyd415MYipPQhweNb-9kLlmes-h-6kBIVKPFotJHVYcK4-1kT0JcyPseAlToCbOGS0PllxBZA9mmkIMOBgGDTF-F3VIU2l1hPpd0-P1QPGrBaofDGHOlme62M3DB1eManal8LhhT7m7C5W_vArsHM4AmR9otkYQ23WQ_2MY37wGd10n2E2Ki5NRV1m4_QEZwj_1qGmNIZ0AgAIkQw7Gb0ojO4EwBvCl-TbY_DKnX24"/>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Dan Abramov</p>
+<p class="text-[12px] text-on-surface-variant">React Core Alum</p>
+</div>
+<button class="text-primary font-label-md text-label-md">Follow</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-xxl bg-surface-container-low border-t border-outline-variant/20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg px-gutter py-xl max-w-container-max mx-auto">
+<div class="md:col-span-1">
+<a class="font-headline-md text-headline-md font-black text-on-surface" href="#">DevJournal</a>
+<p class="mt-md text-on-surface-variant font-body-md text-body-md">Empowering the world's architects with deep technical insights and editorial excellence.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider mb-xs">Explore</span>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">News</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">Engineering</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">Design</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">Product</a>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider mb-xs">Company</span>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">About</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">Careers</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-body-md text-body-md" href="#">Terms</a>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider mb-xs">Stay Connected</span>
+<div class="flex gap-md mb-md">
+<a class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">rss_feed</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">alternate_email</span>
+</a>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">© 2024 DevJournal Editorial. Built for architects.</p>
+</div>
+</div>
+</footer>
+<!-- Bottom Nav for Mobile -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface border-t border-outline-variant/30 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] flex justify-around items-center h-16 px-4">
+<a class="text-on-surface-variant flex flex-col items-center gap-1 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="text-primary flex flex-col items-center gap-1 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">search</span>
+<span class="font-label-md text-label-md">Search</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="font-label-md text-label-md">Saved</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center gap-1 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('article').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Quick Search Shortcut Simulation
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const searchInput = document.querySelector('input[type="text"]');
+                searchInput.blur();
+            }
+        });
+    </script>
+</body></html>
