@@ -11,17 +11,26 @@ import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Dashboard from './components/Dashboard';
+import Auth from './components/Auth';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showAuth, setShowAuth] = useState(null); // null | 'login' | 'signup'
 
-  const handleLogin = () => {
+  const handleLogin = (mode = 'login') => {
+    setShowAuth(mode);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleLoginSuccess = () => {
     setIsLoggedIn(true);
+    setShowAuth(null);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setShowAuth(null);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
@@ -30,6 +39,16 @@ function App() {
       <div className="min-h-screen bg-[#FFFDF9] text-black font-sans antialiased">
         <Dashboard onLogout={handleLogout} />
       </div>
+    );
+  }
+
+  if (showAuth) {
+    return (
+      <Auth 
+        initialMode={showAuth} 
+        onClose={() => setShowAuth(null)} 
+        onLoginSuccess={handleLoginSuccess} 
+      />
     );
   }
 

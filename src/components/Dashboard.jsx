@@ -4,6 +4,7 @@ import {
   Home, 
   Bookmark, 
   User, 
+  Users,
   BookOpen, 
   BarChart2, 
   Search, 
@@ -21,7 +22,8 @@ import {
   Clock,
   Eye,
   Check,
-  TrendingUp
+  TrendingUp,
+  MoreVertical
 } from 'lucide-react';
 
 // Pre-populated default articles (matching user's screenshot & tech newsletter theme)
@@ -175,7 +177,7 @@ const followedPubs = [
 ];
 
 export default function Dashboard({ onLogout }) {
-  const [activeMenu, setActiveMenu] = useState('Home'); // 'Home' | 'Library' | 'Profile' | 'Stories' | 'Stats'
+  const [activeMenu, setActiveMenu] = useState('Home'); // 'Home' | 'Library' | 'Friends' | 'Stories' | 'Stats'
   const [feedTab, setFeedTab] = useState('For you'); // 'For you' | 'Featured'
   const [searchQuery, setSearchQuery] = useState('');
   const [articlesList, setArticlesList] = useState(initialArticles);
@@ -186,8 +188,269 @@ export default function Dashboard({ onLogout }) {
   
   // Modals & Menu Dropdowns
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isNotificationsDropdownOpen, setIsNotificationsDropdownOpen] = useState(false);
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
+
+  // Friends state
+  const [friendsList, setFriendsList] = useState([
+    { id: 1, name: "Dan Abramov", role: "React Creator", avatar: "⚛️", status: "online", activity: "Debugging React Server Components", color: "bg-brand-cyan" },
+    { id: 2, name: "Sarah Drasner", role: "VP of Developer Experience", avatar: "🎨", status: "offline", activity: "Designing design systems", color: "bg-brand-pink" },
+    { id: 3, name: "Kelsey Hightower", role: "Kubernetes Legend", avatar: "☸️", status: "online", activity: "Running clean containers", color: "bg-brand-green" },
+    { id: 4, name: "Rich Harris", role: "Svelte Creator", avatar: "🟠", status: "online", activity: "Svelte 5 runtimes tuning", color: "bg-brand-orange" },
+  ]);
+
+  const [pendingRequests, setPendingRequests] = useState([
+    { id: 5, name: "Guillermo Rauch", role: "Vercel CEO", avatar: "▲", color: "bg-white" },
+    { id: 6, name: "Sophie Alpert", role: "Ex-React Core Team", avatar: "👩‍💻", color: "bg-brand-purple" },
+  ]);
+
+  const [friendSearch, setFriendSearch] = useState('');
+  const [suggestedFriends, setSuggestedFriends] = useState([
+    { id: 7, name: "Lee Robinson", role: "VP of DevRel at Vercel", avatar: "📈", color: "bg-white" },
+    { id: 8, name: "Addy Osmani", role: "Google Chrome Architect", avatar: "🌐", color: "bg-brand-yellow" },
+  ]);
+
+  const handleAcceptRequest = (id, name, role, avatar, color) => {
+    setPendingRequests(prev => prev.filter(r => r.id !== id));
+    setFriendsList(prev => [...prev, { id, name, role: role || "Developer Friend", avatar, status: "online", activity: "Just joined your lobby!", color }]);
+    showToast(`Accepted friend request from ${name}!`);
+  };
+
+  const handleDeclineRequest = (id, name) => {
+    setPendingRequests(prev => prev.filter(r => r.id !== id));
+    showToast(`Declined request from ${name}`);
+  };
+
+  const handleRemoveFriend = (id, name) => {
+    setFriendsList(prev => prev.filter(f => f.id !== id));
+    showToast(`Removed ${name} from friends`);
+  };
+
+  const handleAddFriend = (id, name, role, avatar, color) => {
+    setSuggestedFriends(prev => prev.filter(s => s.id !== id));
+    setFriendsList(prev => [...prev, { id, name, role, avatar, status: "offline", activity: "Awaiting active status", color }]);
+    showToast(`Sent friend request to ${name}!`);
+  };
+
+  // Chat State
+  const [activeChatFriend, setActiveChatFriend] = useState(null);
+  const [chatInput, setChatInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [chatHistory, setChatHistory] = useState({
+    1: [
+      { sender: 'friend', text: "Hey! Just trying to figure out why this Server Component is re-rendering...", time: "10:14 AM" },
+      { sender: 'user', text: "Are you passing functions down that aren't wrapped in useCallback?", time: "10:15 AM" },
+      { sender: 'friend', text: "Ah, good catch! Let me inspect the dependency array.", time: "10:16 AM" }
+    ],
+    2: [
+      { sender: 'friend', text: "Hey! Designing a new color system for the brutalist dashboard. What do you think of a neon pink/cyan combination?", time: "Yesterday" }
+    ],
+    3: [
+      { sender: 'friend', text: "Containers are clean, cluster is green. Ready to launch the new microservices!", time: "2 hours ago" }
+    ],
+    4: [
+      { sender: 'friend', text: "Runes are clean. Svelte 5 is ready to roll. The reactivity model is super fast.", time: "3 hours ago" }
+    ],
+    5: [
+      { sender: 'friend', text: "Congrats on launching the new Byte Size dev lobby! Looks incredibly brutalist.", time: "Just now" }
+    ]
+  });
+
+  const friendReplies = {
+    1: [
+      "Haha, standard React issues. Let's look at the Profiler output.",
+      "Indeed! That fixed the unnecessary renders. You're a life saver.",
+      "RSCs are powerful, but the mental model shift takes a bit of time.",
+      "Exactly. Let's talk about Server Actions next."
+    ],
+    2: [
+      "I love the neon contrast! Fits the web-newsletter vibe perfectly.",
+      "Agreed, brutalism is all about heavy strokes and rich aesthetics.",
+      "Just finished the main page redesign. Shipping it now!"
+    ],
+    3: [
+      "Always test locally before deploying to production Kubernetes clusters.",
+      "Yaml configurations are long but they work. Let's verify standard pods.",
+      "Scale it to 10 replicas and monitor the CPU load!"
+    ],
+    4: [
+      "Svelte 5 runes simplify state management a lot. Give it a try!",
+      "Exactly! No more $ reactive declarations.",
+      "Performance looks outstanding. 10x faster rendering."
+    ],
+    5: [
+      "Vercel Edge runtimes will cache this layout globally. Speed is key.",
+      "Next.js 15 routing handles this view state perfectly.",
+      "Let's deploy it to Vercel production now!"
+    ]
+  };
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (!chatInput.trim() || !activeChatFriend) return;
+
+    const newMessage = {
+      sender: 'user',
+      text: chatInput,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    const friendId = activeChatFriend.id;
+    setChatHistory(prev => ({
+      ...prev,
+      [friendId]: [...(prev[friendId] || []), newMessage]
+    }));
+
+    setChatInput('');
+    setIsTyping(true);
+
+    // Simulate mock reply
+    setTimeout(() => {
+      setIsTyping(false);
+      const replies = friendReplies[friendId] || [
+        "That's awesome! Let's collaborate more on this.",
+        "Good point. I'll take a look at the codebase.",
+        "Let's hop on a Huddle call to debug!"
+      ];
+      const randomReply = replies[Math.floor(Math.random() * replies.length)];
+      
+      setChatHistory(prev => ({
+        ...prev,
+        [friendId]: [
+          ...(prev[friendId] || []),
+          {
+            sender: 'friend',
+            text: randomReply,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }
+        ]
+      }));
+    }, 1200);
+  };
+
+  // Community Group Chat State
+  const [activeGroupChannel, setActiveGroupChannel] = useState('#general');
+  const [isChannelDropdownOpen, setIsChannelDropdownOpen] = useState(false);
+  const [isSidebarCommunityOpen, setIsSidebarCommunityOpen] = useState(false);
+  const [groupChatInput, setGroupChatInput] = useState('');
+  const [groupChatHistories, setGroupChatHistories] = useState({
+    '#general': [
+      { sender: 'Dan Abramov', avatar: '⚛️', color: 'bg-brand', text: "Welcome to the Byte Size dev general lobby! What's everyone working on today?", time: "09:30 AM" },
+      { sender: 'Rich Harris', avatar: '⚡', color: 'bg-brand-orange', text: "Just reading about CSS Container queries. Brutalism design rules!", time: "09:32 AM" },
+      { sender: 'Sarah Drasner', avatar: '🎨', color: 'bg-brand-pink', text: "Hey folks! Working on a new SVG animation guide.", time: "09:35 AM" }
+    ],
+    '#react-nextjs': [
+      { sender: 'Guillermo Rauch', avatar: '▲', color: 'bg-black text-white', text: "Server Actions are changing how we write data mutations. Keep them simple.", time: "10:15 AM" },
+      { sender: 'Lee Robinson', avatar: '📈', color: 'bg-brand-cyan', text: "Next.js 15 dev server startup is 2x faster. Let us know your feedback!", time: "10:18 AM" }
+    ],
+    '#rust-wasm': [
+      { sender: 'Kelsey Hightower', avatar: '🐳', color: 'bg-brand-green', text: "Rust WASM compiles directly to Edge functions. Pretty lightweight.", time: "08:45 AM" },
+      { sender: 'Alex Coding', avatar: '🚀', color: 'bg-brand', text: "It's perfect for microservices that need instant cold starts.", time: "08:50 AM" }
+    ],
+    '#ai-engineering': [
+      { sender: 'Andrej Karpathy', avatar: '🧠', color: 'bg-brand-purple', text: "Vibe coding is basically high-level prompt spec design. The compiler does the heavy lifting.", time: "Yesterday" },
+      { sender: 'Alex Coding', avatar: '🚀', color: 'bg-brand', text: "Exactly, we are orchestrators now. Pair programming with LLMs is the new normal.", time: "Yesterday" }
+    ]
+  });
+
+  const groupReplies = {
+    '#general': [
+      { sender: 'Dan Abramov', avatar: '⚛️', color: 'bg-brand', text: "That sounds neat. Are you using client-side transitions?" },
+      { sender: 'Sarah Drasner', avatar: '🎨', color: 'bg-brand-pink', text: "I love the brutalist styling you guys did here!" },
+      { sender: 'Rich Harris', avatar: '⚡', color: 'bg-brand-orange', text: "Always design with pure CSS first. Keep it simple and performant." }
+    ],
+    '#react-nextjs': [
+      { sender: 'Guillermo Rauch', avatar: '▲', color: 'bg-black text-white', text: "Edge cache hits should be under 50ms globally." },
+      { sender: 'Lee Robinson', avatar: '📈', color: 'bg-brand-cyan', text: "We are adding more visual telemetry for hydration errors in the browser." }
+    ],
+    '#rust-wasm': [
+      { sender: 'Kelsey Hightower', avatar: '🐳', color: 'bg-brand-green', text: "Minimal surface area means secure containers. Rust is perfect for this." }
+    ],
+    '#ai-engineering': [
+      { sender: 'Andrej Karpathy', avatar: '🧠', color: 'bg-brand-purple', text: "Token generation latency is the next bottleneck. WebSockets help." }
+    ]
+  };
+
+  const handleSendGroupMessage = (e) => {
+    e.preventDefault();
+    if (!groupChatInput.trim()) return;
+
+    const newMessage = {
+      sender: 'Alex Coding',
+      avatar: '🚀',
+      color: 'bg-brand',
+      text: groupChatInput,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setGroupChatHistories(prev => ({
+      ...prev,
+      [activeGroupChannel]: [...(prev[activeGroupChannel] || []), newMessage]
+    }));
+
+    const currentChannel = activeGroupChannel;
+    setGroupChatInput('');
+
+    // Trigger mock group reply
+    setTimeout(() => {
+      const replies = groupReplies[currentChannel] || [];
+      if (replies.length > 0) {
+        const randomReply = replies[Math.floor(Math.random() * replies.length)];
+        setGroupChatHistories(prev => ({
+          ...prev,
+          [currentChannel]: [
+            ...(prev[currentChannel] || []),
+            {
+              ...randomReply,
+              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }
+          ]
+        }));
+      }
+    }, 1500);
+  };
+
+  // Notifications State
+  const [isGroupSettingsOpen, setIsGroupSettingsOpen] = useState(false);
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: "New clap on your story",
+      message: "Matt Lillywhite clapped for 'Vibe Coding is OVER'",
+      time: "2 min ago",
+      type: "clap",
+      read: false,
+      avatar: "👏"
+    },
+    {
+      id: 2,
+      title: "New subscriber",
+      message: "jane.smith@gmail.com subscribed to Byte Size",
+      time: "1 hour ago",
+      type: "subscriber",
+      read: false,
+      avatar: "📧"
+    },
+    {
+      id: 3,
+      title: "System Update",
+      message: "Byte Size Dashboard upgraded to v1.2",
+      time: "5 hours ago",
+      type: "system",
+      read: true,
+      avatar: "⚙️"
+    },
+    {
+      id: 4,
+      title: "New Comment",
+      message: "Alex left feedback on your latest draft",
+      time: "1 day ago",
+      type: "comment",
+      read: true,
+      avatar: "💬"
+    }
+  ]);
 
   // New Story Form State
   const [newTitle, setNewTitle] = useState('');
@@ -198,6 +461,23 @@ export default function Dashboard({ onLogout }) {
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 2500);
+  };
+
+  const unreadNotificationsCount = notifications.filter(n => !n.read).length;
+
+  const markAllNotificationsAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    showToast("All notifications marked as read");
+  };
+
+  const markNotificationAsRead = (id) => {
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+  };
+
+  const deleteNotification = (e, id) => {
+    e.stopPropagation();
+    setNotifications(prev => prev.filter(n => n.id !== id));
+    showToast("Notification deleted");
   };
 
   const handleClap = (e, id) => {
@@ -284,7 +564,6 @@ export default function Dashboard({ onLogout }) {
         <div className="flex flex-col gap-8">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <span className="text-2xl">⚡</span>
             <span className="font-black text-2xl uppercase tracking-tighter bg-brand border-2 border-black px-2.5 py-0.5 rounded shadow-brutal-sm">
               Byte Size
             </span>
@@ -297,33 +576,64 @@ export default function Dashboard({ onLogout }) {
               { id: 'Library', label: 'Library', icon: <Bookmark className="w-5 h-5" /> },
               { id: 'Stories', label: 'Stories', icon: <BookOpen className="w-5 h-5" /> },
               { id: 'Stats', label: 'Stats', icon: <BarChart2 className="w-5 h-5" /> },
+              { id: 'Friends', label: 'Friends', icon: <Users className="w-5 h-5" /> },
               { id: 'Profile', label: 'Profile', icon: <User className="w-5 h-5" /> },
+              { id: 'Community', label: 'Community', icon: <MessageSquare className="w-5 h-5" /> },
             ].map(item => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setActiveMenu(item.id);
-                  setSelectedTopic('All');
-                }}
-                className={`flex items-center gap-3 w-full p-2.5 rounded font-black text-sm uppercase border-2 transition-all text-left ${
-                  activeMenu === item.id 
-                    ? 'bg-brand-cyan border-black shadow-brutal-sm translate-x-[-2px] translate-y-[-2px]' 
-                    : 'bg-transparent border-transparent hover:bg-gray-50'
-                }`}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-                {item.id === 'Library' && bookmarkedIds.length > 0 && (
-                  <span className="ml-auto bg-brand-pink border border-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black">
-                    {bookmarkedIds.length}
-                  </span>
+              <React.Fragment key={item.id}>
+                <button
+                  onClick={() => {
+                    setActiveMenu(item.id);
+                    setSelectedTopic('All');
+                    if (item.id === 'Community') {
+                      setIsSidebarCommunityOpen(!isSidebarCommunityOpen);
+                    }
+                  }}
+                  className={`flex items-center gap-3 w-full p-2.5 rounded font-black text-sm uppercase border-2 transition-all text-left ${
+                    activeMenu === item.id 
+                      ? 'bg-brand-cyan border-black shadow-brutal-sm translate-x-[-2px] translate-y-[-2px]' 
+                      : 'bg-transparent border-transparent hover:bg-gray-50'
+                  }`}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                  {item.id === 'Library' && bookmarkedIds.length > 0 && (
+                    <span className="ml-auto bg-brand-pink border border-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black">
+                      {bookmarkedIds.length}
+                    </span>
+                  )}
+                  {item.id === 'Stories' && userStories.length > 0 && (
+                    <span className="ml-auto bg-brand-purple border border-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black text-white">
+                      {userStories.length}
+                    </span>
+                  )}
+                  {item.id === 'Community' && (
+                    <ChevronDown className={`w-4 h-4 ml-auto transition-transform duration-200 ${isSidebarCommunityOpen ? 'rotate-180' : ''}`} />
+                  )}
+                </button>
+
+                {/* Submenu Dropdown for Community */}
+                {item.id === 'Community' && isSidebarCommunityOpen && (
+                  <div className="flex flex-col gap-1 pl-6 mt-1 mb-2">
+                    {['#general', '#react-nextjs', '#rust-wasm', '#ai-engineering'].map(channel => (
+                      <button
+                        key={channel}
+                        onClick={() => {
+                          setActiveGroupChannel(channel);
+                          setActiveMenu('Community');
+                        }}
+                        className={`text-left p-1.5 px-2.5 rounded font-black text-[10px] uppercase border transition-all cursor-pointer ${
+                          activeGroupChannel === channel && activeMenu === 'Community'
+                            ? 'bg-brand border-black shadow-brutal-sm text-black'
+                            : 'bg-white hover:bg-gray-50 border-black/10 text-gray-600'
+                        }`}
+                      >
+                        {channel}
+                      </button>
+                    ))}
+                  </div>
                 )}
-                {item.id === 'Stories' && userStories.length > 0 && (
-                  <span className="ml-auto bg-brand-purple border border-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black text-white">
-                    {userStories.length}
-                  </span>
-                )}
-              </button>
+              </React.Fragment>
             ))}
           </nav>
 
@@ -371,10 +681,10 @@ export default function Dashboard({ onLogout }) {
       <main className="flex-1 flex flex-col min-w-0 bg-[#FFFDF9]">
         
         {/* TOP NAVBAR (Search & Actions) */}
-        <header className="border-b-4 border-black px-6 py-4 bg-white flex items-center justify-between gap-4 z-10">
+        {activeMenu !== 'Community' && (
+          <header className="border-b-4 border-black px-6 py-4 bg-white flex items-center justify-between gap-4 z-10">
           {/* Mobile brand header (shows only on mobile) */}
           <div className="flex items-center gap-2 md:hidden">
-            <span className="text-xl">⚡</span>
             <span className="font-black text-lg uppercase tracking-tight">Byte Size</span>
           </div>
 
@@ -402,16 +712,117 @@ export default function Dashboard({ onLogout }) {
               <span className="hidden sm:inline">Write</span>
             </button>
 
-            {/* Notifications icon */}
-            <button className="p-2 border-2 border-black rounded bg-[#FFFDF9] hover:bg-gray-50 shadow-brutal-sm relative">
-              <Bell className="w-4 h-4 text-black" />
-              <span className="absolute top-[-3px] right-[-3px] w-2.5 h-2.5 rounded-full bg-brand-pink border border-black" />
-            </button>
+            {/* Notifications icon & Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={() => {
+                  setIsNotificationsDropdownOpen(!isNotificationsDropdownOpen);
+                  setIsProfileDropdownOpen(false);
+                }}
+                className="p-2 border-2 border-black rounded bg-[#FFFDF9] hover:bg-gray-50 shadow-brutal-sm relative transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+              >
+                <Bell className="w-4 h-4 text-black" />
+                {unreadNotificationsCount > 0 && (
+                  <span className="absolute top-[-3px] right-[-3px] w-2.5 h-2.5 rounded-full bg-brand-pink border border-black animate-pulse" />
+                )}
+              </button>
+
+              {/* Notifications Context Dropdown */}
+              <AnimatePresence>
+                {isNotificationsDropdownOpen && (
+                  <>
+                    <div className="fixed inset-0 z-30" onClick={() => setIsNotificationsDropdownOpen(false)} />
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute right-[-60px] sm:right-0 mt-2.5 w-80 sm:w-96 bg-[#FFFDF9] border-4 border-black p-4 rounded-lg shadow-brutal z-40"
+                    >
+                      <div className="flex items-center justify-between pb-3 border-b-2 border-dashed border-black/10 mb-2.5">
+                        <div className="flex items-center gap-1.5 font-sans">
+                          <span className="text-xs font-black uppercase tracking-tight">Notifications</span>
+                          {unreadNotificationsCount > 0 && (
+                            <span className="bg-brand-pink border border-black text-[9px] px-1.5 py-0.5 rounded font-black uppercase">
+                              {unreadNotificationsCount} New
+                            </span>
+                          )}
+                        </div>
+                        {unreadNotificationsCount > 0 && (
+                          <button 
+                            onClick={markAllNotificationsAsRead}
+                            className="text-[9px] font-black uppercase bg-[#FFFDF9] border border-black px-2 py-0.5 rounded shadow-brutal-sm hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all"
+                          >
+                            Mark all as read
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col gap-2 max-h-80 overflow-y-auto pr-1">
+                        {notifications.length > 0 ? (
+                          notifications.map((notif) => (
+                            <div 
+                              key={notif.id}
+                              onClick={() => markNotificationAsRead(notif.id)}
+                              className={`p-2.5 rounded border-2 border-black flex gap-3 transition-all cursor-pointer relative ${
+                                notif.read ? 'bg-white hover:bg-gray-50 border-gray-200' : 'bg-brand-cyan/20 border-black shadow-brutal-sm'
+                              }`}
+                            >
+                              <div className="w-8 h-8 rounded-full border-2 border-black bg-white flex items-center justify-center text-sm shadow-brutal-sm shrink-0">
+                                {notif.avatar}
+                              </div>
+                              <div className="flex-1 min-w-0 pr-6">
+                                <h6 className={`text-[11px] uppercase leading-tight font-black ${notif.read ? 'text-gray-700' : 'text-black'}`}>
+                                  {notif.title}
+                                </h6>
+                                <p className="text-[10px] font-bold text-gray-500 mt-0.5 leading-snug break-words">
+                                  {notif.message}
+                                </p>
+                                <span className="text-[9px] font-semibold text-gray-400 mt-1 block">
+                                  {notif.time}
+                                </span>
+                              </div>
+                              <button 
+                                onClick={(e) => deleteNotification(e, notif.id)}
+                                className="absolute top-2.5 right-2.5 text-gray-400 hover:text-red-500 transition-colors"
+                              >
+                                <X className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="py-8 text-center bg-white border-2 border-dashed border-gray-300 rounded-lg">
+                            <span className="text-2xl block mb-1">☕</span>
+                            <span className="font-black text-[10px] uppercase text-gray-400">All caught up!</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {notifications.length > 0 && (
+                        <div className="mt-3 pt-2.5 border-t border-black/10 text-center">
+                          <button 
+                            onClick={() => {
+                              setNotifications([]);
+                              showToast("All notifications cleared");
+                            }}
+                            className="text-[9px] font-black uppercase text-red-500 hover:underline"
+                          >
+                            Clear all notifications
+                          </button>
+                        </div>
+                      )}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Avatar Dropdown */}
             <div className="relative">
               <button 
-                onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                onClick={() => {
+                  setIsProfileDropdownOpen(!isProfileDropdownOpen);
+                  setIsNotificationsDropdownOpen(false);
+                }}
                 className="flex items-center gap-1 border-2 border-black p-0.5 rounded-full bg-white hover:bg-gray-50 shadow-brutal-sm"
               >
                 <span className="w-7 h-7 rounded-full bg-brand-cyan flex items-center justify-center font-bold text-sm">
@@ -437,10 +848,16 @@ export default function Dashboard({ onLogout }) {
                       </div>
                       <div className="flex flex-col gap-1 text-xs font-black uppercase">
                         <button 
+                          onClick={() => { setActiveMenu('Friends'); setIsProfileDropdownOpen(false); }}
+                          className="w-full text-left p-1.5 hover:bg-brand-cyan rounded transition-colors"
+                        >
+                          Lobby Friends
+                        </button>
+                        <button 
                           onClick={() => { setActiveMenu('Profile'); setIsProfileDropdownOpen(false); }}
                           className="w-full text-left p-1.5 hover:bg-brand-cyan rounded transition-colors"
                         >
-                          My Profile
+                          Edit Profile
                         </button>
                         <button 
                           onClick={() => { setActiveMenu('Stats'); setIsProfileDropdownOpen(false); }}
@@ -471,9 +888,10 @@ export default function Dashboard({ onLogout }) {
             </div>
           </div>
         </header>
+        )}
 
         {/* FEED / LAYOUT DYNAMIC VIEWPORT AREA */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 max-w-7xl w-full mx-auto">
+        <div className={`flex-1 ${activeMenu === 'Community' ? 'p-0 max-w-none overflow-hidden' : 'p-6 md:p-8 max-w-7xl overflow-y-auto'} w-full mx-auto`}>
           
           {/* MENU VIEW 1: HOME FEED */}
           {activeMenu === 'Home' && (
@@ -875,9 +1293,264 @@ export default function Dashboard({ onLogout }) {
             </div>
           )}
 
-          {/* MENU VIEW 5: USER PROFILE EDIT */}
+          {/* MENU VIEW 5: FRIENDS LIST MANAGER */}
+          {activeMenu === 'Friends' && (
+            <div className="max-w-4xl">
+              {/* Header */}
+              <div className="border-b-2 border-black pb-4 mb-8">
+                <h2 className="text-2xl font-black uppercase tracking-tight flex items-center gap-2">
+                  <Users className="w-6 h-6 text-black" />
+                  Developer Lobby & Friends
+                </h2>
+                <p className="text-xs font-bold text-gray-500 mt-1">
+                  Connect with creators, share coding status, and build your collaborative developer bubble.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Left: Active Friends List */}
+                <div className="lg:col-span-8 flex flex-col gap-6">
+                  {/* Search / Filter Friends */}
+                  <div className="bg-white border-4 border-black p-4 rounded-lg shadow-brutal flex items-center gap-2">
+                    <Search className="w-5 h-5 text-gray-400 shrink-0" />
+                    <input
+                      type="text"
+                      placeholder="Search active friends by name or role..."
+                      value={friendSearch}
+                      onChange={(e) => setFriendSearch(e.target.value)}
+                      className="bg-transparent text-xs font-bold w-full focus:outline-none placeholder:text-gray-400"
+                    />
+                  </div>
+
+                  {/* Friends Grid */}
+                  <div className="flex flex-col gap-4">
+                    <h3 className="text-sm font-black uppercase tracking-wider flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
+                      Active Lobby ({friendsList.filter(f => f.status === 'online').length} Online)
+                    </h3>
+
+                    {friendsList.filter(f => f.name.toLowerCase().includes(friendSearch.toLowerCase()) || f.role.toLowerCase().includes(friendSearch.toLowerCase())).length === 0 ? (
+                      <div className="bg-white border-4 border-black p-8 text-center rounded-lg shadow-brutal">
+                        <p className="text-sm font-bold text-gray-500">No developer friends found matching that search.</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {friendsList
+                          .filter(f => f.name.toLowerCase().includes(friendSearch.toLowerCase()) || f.role.toLowerCase().includes(friendSearch.toLowerCase()))
+                          .map(friend => (
+                            <motion.div
+                              layout
+                              key={friend.id}
+                              className="bg-white border-4 border-black p-4 rounded-lg shadow-brutal flex flex-col justify-between hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
+                            >
+                              <div className="flex gap-3">
+                                <span className={`w-12 h-12 rounded-full border-2 border-black ${friend.color || 'bg-brand'} flex items-center justify-center text-2xl shrink-0 shadow-brutal-sm`}>
+                                  {friend.avatar}
+                                </span>
+                                <div className="min-w-0">
+                                  <div className="flex items-center gap-1.5">
+                                    <h4 className="font-black text-sm truncate">{friend.name}</h4>
+                                    <span className={`w-2 h-2 rounded-full ${friend.status === 'online' ? 'bg-green-500 animate-pulse' : 'bg-gray-300'}`} />
+                                  </div>
+                                  <p className="text-[10px] font-bold text-gray-400 truncate">{friend.role}</p>
+                                </div>
+                              </div>
+
+                              {friend.activity && (
+                                <div className="mt-3 bg-gray-50 border border-black p-2 rounded text-[10px] font-bold text-gray-700 flex items-center gap-1.5">
+                                  <span className="text-xs">💻</span>
+                                  <span className="truncate italic">"{friend.activity}"</span>
+                                </div>
+                              )}
+
+                              <div className="flex gap-2 mt-4 border-t border-black/10 pt-3">
+                                <button
+                                  onClick={() => setActiveChatFriend(friend)}
+                                  className="flex-1 bg-brand-cyan border-2 border-black py-1 px-2.5 rounded font-black text-[10px] uppercase shadow-brutal-sm hover:translate-y-[-1px] transition-all cursor-pointer"
+                                >
+                                  Ping / Chat
+                                </button>
+                                <button
+                                  onClick={() => handleRemoveFriend(friend.id, friend.name)}
+                                  className="bg-brand-pink border-2 border-black p-1 px-2.5 rounded font-black text-[10px] uppercase hover:bg-red-100 transition-colors cursor-pointer"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            </motion.div>
+                          ))
+                        }
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right Sidebar: Requests & Suggestions OR Active Chat box */}
+                <div className="lg:col-span-4 flex flex-col gap-6">
+                  {activeChatFriend ? (
+                    /* Brutalist Chat Panel */
+                    <div className="bg-white border-4 border-black p-4 rounded-lg shadow-brutal flex flex-col h-[480px]">
+                      {/* Chat Header */}
+                      <div className="flex items-center justify-between pb-3 border-b-2 border-black mb-3 shrink-0">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className={`w-8 h-8 rounded-full border border-black ${activeChatFriend.color || 'bg-brand'} flex items-center justify-center text-sm shrink-0 shadow-brutal-sm`}>
+                            {activeChatFriend.avatar}
+                          </span>
+                          <div className="min-w-0">
+                            <h4 className="font-black text-[11px] truncate leading-tight">{activeChatFriend.name}</h4>
+                            <span className="flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                              <span className="text-[8px] font-bold text-gray-400">Active</span>
+                            </span>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => setActiveChatFriend(null)}
+                          className="bg-white hover:bg-gray-100 border-2 border-black p-1 rounded transition-colors shadow-brutal-sm cursor-pointer"
+                          title="Close Chat"
+                        >
+                          <X className="w-3.5 h-3.5 text-black" />
+                        </button>
+                      </div>
+
+                      {/* Chat Messages */}
+                      <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-2.5 mb-3 scrollbar-thin">
+                        {(chatHistory[activeChatFriend.id] || []).map((msg, idx) => (
+                          <div 
+                            key={idx} 
+                            className={`flex flex-col max-w-[85%] ${msg.sender === 'user' ? 'self-end items-end' : 'self-start items-start'}`}
+                          >
+                            <div className={`p-2.5 rounded border-2 border-black font-semibold text-[10px] shadow-brutal-sm leading-snug break-words ${
+                              msg.sender === 'user' 
+                                ? 'bg-brand-cyan text-black rounded-tr-none' 
+                                : 'bg-gray-50 text-black rounded-tl-none'
+                            }`}>
+                              {msg.text}
+                            </div>
+                            <span className="text-[7px] font-bold text-gray-400 mt-0.5 px-1">{msg.time}</span>
+                          </div>
+                        ))}
+                        {isTyping && (
+                          <div className="self-start flex items-center gap-1 bg-gray-50 border-2 border-black p-2 rounded rounded-tl-none text-[9px] font-bold text-gray-500 shadow-brutal-sm">
+                            <span className="animate-bounce">.</span>
+                            <span className="animate-bounce [animation-delay:0.2s]">.</span>
+                            <span className="animate-bounce [animation-delay:0.4s]">.</span>
+                            <span>typing</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Chat Input form */}
+                      <form onSubmit={handleSendMessage} className="flex gap-2 shrink-0 border-t-2 border-black/10 pt-3">
+                        <input
+                          type="text"
+                          value={chatInput}
+                          onChange={(e) => setChatInput(e.target.value)}
+                          placeholder="Type your message..."
+                          className="flex-1 bg-gray-50 border-2 border-black p-2 rounded text-[10px] font-bold focus:outline-none focus:bg-white"
+                        />
+                        <button
+                          type="submit"
+                          className="bg-brand border-2 border-black px-3.5 rounded font-black text-[10px] uppercase shadow-brutal-sm hover:translate-y-[-1px] transition-all cursor-pointer"
+                        >
+                          Send
+                        </button>
+                      </form>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Friend Requests */}
+                      <div className="bg-white border-4 border-black p-4 rounded-lg shadow-brutal">
+                        <h3 className="font-black text-xs uppercase tracking-wider mb-4 border-b-2 border-black pb-2 flex items-center justify-between">
+                          <span>Requests</span>
+                          {pendingRequests.length > 0 && (
+                            <span className="bg-brand-pink border border-black text-[9px] px-1.5 py-0.5 rounded-full font-black animate-bounce">
+                              {pendingRequests.length}
+                            </span>
+                          )}
+                        </h3>
+
+                        {pendingRequests.length === 0 ? (
+                          <p className="text-[10px] font-bold text-gray-400 text-center py-4">No pending lobby requests.</p>
+                        ) : (
+                          <div className="flex flex-col gap-3">
+                            {pendingRequests.map(req => (
+                              <div key={req.id} className="border border-black p-2.5 rounded bg-gray-50 flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <span className={`w-8 h-8 rounded-full border border-black ${req.color || 'bg-brand'} flex items-center justify-center text-sm shrink-0`}>
+                                    {req.avatar}
+                                  </span>
+                                  <div className="min-w-0">
+                                    <h4 className="font-black text-[11px] truncate leading-tight">{req.name}</h4>
+                                    <p className="text-[8px] font-bold text-gray-400 truncate">{req.role || "Developer"}</p>
+                                  </div>
+                                </div>
+
+                                <div className="flex gap-1 shrink-0">
+                                  <button
+                                    onClick={() => handleAcceptRequest(req.id, req.name, req.role, req.avatar, req.color)}
+                                    className="bg-brand-green border border-black p-1 rounded font-black text-[8px] hover:scale-105 transition-transform cursor-pointer"
+                                    title="Accept"
+                                  >
+                                    ✓
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeclineRequest(req.id, req.name)}
+                                    className="bg-brand-pink border border-black p-1 rounded font-black text-[8px] hover:scale-105 transition-transform cursor-pointer"
+                                    title="Decline"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Suggested Creators */}
+                      <div className="bg-white border-4 border-black p-4 rounded-lg shadow-brutal">
+                        <h3 className="font-black text-xs uppercase tracking-wider mb-4 border-b-2 border-black pb-2">
+                          Suggested Creators
+                        </h3>
+
+                        {suggestedFriends.length === 0 ? (
+                          <p className="text-[10px] font-bold text-gray-400 text-center py-4">Caught up with everyone!</p>
+                        ) : (
+                          <div className="flex flex-col gap-3">
+                            {suggestedFriends.map(sug => (
+                              <div key={sug.id} className="flex items-center justify-between gap-2 border-b border-black/5 pb-2.5 last:border-b-0 last:pb-0">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <span className={`w-8 h-8 rounded-full border border-black ${sug.color || 'bg-brand'} flex items-center justify-center text-sm shrink-0`}>
+                                    {sug.avatar}
+                                  </span>
+                                  <div className="min-w-0">
+                                    <h4 className="font-black text-[11px] truncate leading-tight">{sug.name}</h4>
+                                    <p className="text-[8px] font-bold text-gray-400 truncate">{sug.role}</p>
+                                  </div>
+                                </div>
+
+                                <button
+                                  onClick={() => handleAddFriend(sug.id, sug.name, sug.role, sug.avatar, sug.color)}
+                                  className="bg-white hover:bg-brand-cyan border border-black px-2 py-1 rounded font-black text-[8px] uppercase shadow-brutal-sm hover:translate-y-[-1px] transition-all cursor-pointer"
+                                >
+                                  Add
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MENU VIEW 6: USER PROFILE EDIT */}
           {activeMenu === 'Profile' && (
-            <div className="max-w-2xl">
+            <div className="max-w-2xl animate-fade-in">
               <div className="border-b-2 border-black pb-4 mb-8">
                 <h2 className="text-2xl font-black uppercase tracking-tight flex items-center gap-2">
                   <User className="w-6 h-6 text-black" />
@@ -896,21 +1569,25 @@ export default function Dashboard({ onLogout }) {
                   <div>
                     <h3 className="font-black text-base uppercase">Developer Account</h3>
                     <span className="text-[10px] font-bold text-gray-400 block mb-1">Created June 2026 • Tier: Partner Plan</span>
-                    <button className="bg-brand-cyan border border-black px-2.5 py-1 text-[9px] font-black uppercase rounded shadow-brutal-sm hover:translate-y-[-1px]">
+                    <button 
+                      type="button"
+                      onClick={() => showToast("Avatar uploads are managed securely via S3!")}
+                      className="bg-brand-cyan border border-black px-2.5 py-1 text-[9px] font-black uppercase rounded shadow-brutal-sm hover:translate-y-[-1px] cursor-pointer"
+                    >
                       Change Avatar
                     </button>
                   </div>
                 </div>
 
                 {/* Form fields */}
-                <form className="flex flex-col gap-4 text-xs font-black uppercase" onSubmit={(e) => { e.preventDefault(); showToast("Profile settings saved!"); }}>
+                <form className="flex flex-col gap-4 text-xs font-black uppercase" onSubmit={(e) => { e.preventDefault(); showToast("Profile settings saved successfully!"); }}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-gray-500">First Name</label>
                       <input 
                         type="text" 
                         defaultValue="Alex" 
-                        className="bg-gray-50 border-2 border-black p-2.5 rounded font-bold"
+                        className="bg-gray-50 border-2 border-black p-2.5 rounded font-bold focus:outline-none"
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
@@ -918,7 +1595,7 @@ export default function Dashboard({ onLogout }) {
                       <input 
                         type="text" 
                         defaultValue="Developer" 
-                        className="bg-gray-50 border-2 border-black p-2.5 rounded font-bold"
+                        className="bg-gray-50 border-2 border-black p-2.5 rounded font-bold focus:outline-none"
                       />
                     </div>
                   </div>
@@ -928,7 +1605,7 @@ export default function Dashboard({ onLogout }) {
                     <textarea 
                       rows="3" 
                       defaultValue="Systems architect, writer, and tech enthusiast. Focusing on custom web development, agent orchestrations, and prompt design."
-                      className="bg-gray-50 border-2 border-black p-2.5 rounded font-bold text-xs leading-relaxed"
+                      className="bg-gray-50 border-2 border-black p-2.5 rounded font-bold text-xs leading-relaxed focus:outline-none"
                     />
                   </div>
 
@@ -944,13 +1621,142 @@ export default function Dashboard({ onLogout }) {
 
                   <button 
                     type="submit"
-                    className="bg-brand border-2 border-black py-3 rounded font-black text-xs uppercase shadow-brutal hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all mt-2 text-center"
+                    className="bg-brand border-2 border-black py-3 rounded font-black text-xs uppercase shadow-brutal hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all mt-2 text-center cursor-pointer"
                   >
                     Save Changes
                   </button>
                 </form>
 
               </div>
+            </div>
+          )}
+
+          {/* MENU VIEW 7: COMMUNITY GROUP CHAT */}
+          {activeMenu === 'Community' && (
+            <div className="w-full flex flex-col animate-fade-in h-screen">
+              {/* Chat Interface Container - Full chat */}
+              <div className="bg-white border-t-4 border-b-4 border-black flex flex-col h-full overflow-hidden">
+                {/* Chat Panel Header */}
+                <div className="bg-black/5 border-b-4 border-black px-4 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="w-9 h-9 rounded-full border-2 border-black bg-brand flex items-center justify-center font-black text-base shadow-brutal-sm shrink-0">
+                      #
+                    </span>
+                    <div>
+                      <span className="font-black text-sm uppercase tracking-wide block leading-none mb-1">
+                        {activeGroupChannel.substring(1)}
+                      </span>
+                      <span className="text-[10px] font-bold text-gray-500 block leading-none">
+                        {activeGroupChannel === '#general' ? '12' : 
+                         activeGroupChannel === '#react-nextjs' ? '24' : 
+                         activeGroupChannel === '#rust-wasm' ? '16' : '32'} members
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Settings ellipsis menu */}
+                  <div className="relative">
+                    <button 
+                      onClick={() => setIsGroupSettingsOpen(!isGroupSettingsOpen)}
+                      className="p-1.5 border-2 border-black rounded bg-white hover:bg-gray-50 shadow-brutal-sm transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+                    >
+                      <MoreVertical className="w-4 h-4 text-black" />
+                    </button>
+                    <AnimatePresence>
+                      {isGroupSettingsOpen && (
+                        <>
+                          <div className="fixed inset-0 z-30" onClick={() => setIsGroupSettingsOpen(false)} />
+                          <motion.div
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 5 }}
+                            className="absolute right-0 mt-2 w-48 bg-[#FFFDF9] border-4 border-black p-3 rounded-lg shadow-brutal z-45 text-xs font-black uppercase"
+                          >
+                            <div className="pb-2 border-b-2 border-dashed border-black/10 mb-2 text-gray-400 text-[9px] font-black">
+                              Group Settings
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <button 
+                                onClick={() => { setIsGroupSettingsOpen(false); showToast("Mute settings updated"); }}
+                                className="w-full text-left p-1.5 hover:bg-brand-cyan rounded transition-colors"
+                              >
+                                Mute notifications
+                              </button>
+                              <button 
+                                onClick={() => { setIsGroupSettingsOpen(false); showToast("Opened member directory"); }}
+                                className="w-full text-left p-1.5 hover:bg-brand-cyan rounded transition-colors"
+                              >
+                                View members
+                              </button>
+                              <button 
+                                onClick={() => { setIsGroupSettingsOpen(false); showToast("Group invite link copied"); }}
+                                className="w-full text-left p-1.5 hover:bg-brand-cyan rounded transition-colors"
+                              >
+                                Copy invite link
+                              </button>
+                              <hr className="my-1.5 border-black/10" />
+                              <button 
+                                onClick={() => { setIsGroupSettingsOpen(false); showToast("Left the group"); }}
+                                className="w-full text-left p-1.5 hover:bg-red-50 text-red-600 rounded transition-colors flex items-center justify-between"
+                              >
+                                Leave Group
+                              </button>
+                            </div>
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                {/* Messages feed */}
+                <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 scrollbar-thin">
+                  {(groupChatHistories[activeGroupChannel] || []).map((msg, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`flex gap-3 items-start ${msg.sender === 'Alex Coding' ? 'flex-row-reverse' : ''}`}
+                    >
+                      {/* Avatar */}
+                      <span className={`w-9 h-9 rounded-full border-2 border-black ${msg.color || 'bg-brand'} flex items-center justify-center text-base shadow-brutal-sm shrink-0`}>
+                        {msg.avatar}
+                      </span>
+
+                      {/* Bubble content */}
+                      <div className={`flex flex-col max-w-[70%] ${msg.sender === 'Alex Coding' ? 'items-end' : 'items-start'}`}>
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span className="font-black text-[10px] uppercase tracking-wider">{msg.sender}</span>
+                          <span className="text-[7px] font-bold text-gray-400">{msg.time}</span>
+                        </div>
+                        <div className={`p-3 rounded border-2 border-black font-semibold text-[10px] shadow-brutal-sm leading-relaxed break-words ${
+                          msg.sender === 'Alex Coding' 
+                            ? 'bg-brand-cyan text-black rounded-tr-none' 
+                            : 'bg-[#FFFDF9] text-black rounded-tl-none'
+                        }`}>
+                          {msg.text}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Message input footer form */}
+                <form onSubmit={handleSendGroupMessage} className="border-t-4 border-black p-4 bg-gray-50 flex gap-3">
+                  <input
+                    type="text"
+                    value={groupChatInput}
+                    onChange={(e) => setGroupChatInput(e.target.value)}
+                    placeholder={`Broadcast message to ${activeGroupChannel}...`}
+                    className="flex-1 bg-white border-2 border-black p-3 rounded font-bold text-xs focus:outline-none placeholder:text-gray-400 focus:bg-white"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-brand border-2 border-black px-6 rounded font-black text-xs uppercase shadow-brutal hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+                  >
+                    Broadcast
+                  </button>
+                </form>
+              </div>
+
             </div>
           )}
 

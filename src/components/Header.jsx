@@ -41,7 +41,7 @@ export default function Header({ onLogin }) {
 
         {/* Login & CTA Buttons */}
         <button 
-          onClick={onLogin}
+          onClick={() => onLogin('login')}
           className="flex items-center gap-1.5 font-bold text-sm px-3 py-1.5 hover:underline"
         >
           <LogIn className="w-4 h-4" />
@@ -51,7 +51,7 @@ export default function Header({ onLogin }) {
         <motion.button 
           whileHover={{ scale: 1.03, x: -1, y: -1 }}
           whileTap={{ scale: 0.98 }}
-          onClick={onLogin}
+          onClick={() => onLogin('signup')}
           className="bg-brand border-2 border-black px-4 py-2 font-black text-sm rounded shadow-brutal hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow"
         >
           Sign Up
@@ -119,14 +119,14 @@ export default function Header({ onLogin }) {
 
             <div className="flex items-center gap-4 mt-2">
               <button 
-                onClick={() => { setIsMobileMenuOpen(false); onLogin(); }}
+                onClick={() => { setIsMobileMenuOpen(false); onLogin('login'); }}
                 className="flex-1 flex items-center justify-center gap-2 border-2 border-black py-2.5 font-bold rounded bg-white"
               >
                 <LogIn className="w-4 h-4" />
                 Login
               </button>
               <button 
-                onClick={() => { setIsMobileMenuOpen(false); onLogin(); }}
+                onClick={() => { setIsMobileMenuOpen(false); onLogin('signup'); }}
                 className="flex-1 bg-brand border-2 border-black py-2.5 font-black rounded shadow-brutal"
               >
                 Sign Up
